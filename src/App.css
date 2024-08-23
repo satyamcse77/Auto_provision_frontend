@@ -1,0 +1,957 @@
+body {
+  color: #fff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 2px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #15171c; /* Background color of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #15171c; /* Color of the draggable part of the scrollbar */
+  border-radius: 6px; /* Roundness of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #15171c; /* Color when hovering over the draggable part */
+}
+button {
+  background-color: #4d8515;
+  width: 100%;
+  color: white;
+  padding: 0.8rem 2.3rem;
+  box-shadow: 5px 5px 7px 0px #0000003f;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.5s;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+}
+button::before {
+  content: "";
+  position: absolute;
+  background-color: #1f1f1f;
+  top: 0;
+  left : 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: all 0.8s;
+}
+button:hover::before {
+  transform: scaleX(1);
+}
+button:hover {
+  color: #fff;
+}
+.config-hr {
+  width: 100%;
+  border: none;
+  border-top: 2px solid #d0d0d0;
+  margin: 20px 0;
+}
+
+
+
+
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background-color: #272c33;
+  color: #d7d9e3;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 20px;
+  text-align: center;
+}
+
+.nav {
+  background-color: #2f3033;
+  color: #d7d9e3;
+}
+
+.accordion {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.card {
+  background-color: #272c33;
+}
+
+.accordion-toggle {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: #d7d9e3;
+  background-color: #272c33 !important;
+}
+
+.nav-link {
+  color: #d7d9e3;
+  padding: 10px 20px;
+  display: flex;
+  align-items: left;
+  justify-content: center;
+  text-decoration: none;
+  background-color: #2f3033;
+}
+
+.nav-link:hover {
+  background-color: #fff;
+}
+
+.collapse {
+  display: none;
+}
+
+.collapse.show {
+  display: block;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+/* Main content */
+.main-content {
+
+  padding: 20px;
+  background-color: #f8f9fa;
+  flex-grow: 1;
+  width: 100%;
+}
+
+/* Dashboard */
+.dashboard-card {
+  box-shadow: 5px 5px rgba(189, 189, 189, 0.3);
+}
+
+.home-charts {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboard-container {
+  margin-left: 200px;
+  padding: 20px;
+}
+
+.dashboard-row {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.dashboard-container .row {
+  justify-content: flex-end;
+}
+
+/* IP Phone Provisioning Form */
+.login-container21 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8rem;
+  background-color: #15171c;
+  height: 100vh;
+} 
+
+.auto-schedule-form{
+  display: flex;
+  width: calc(100%-280px);
+  margin-left: 240px;
+  flex-direction: column;
+  margin-right: 40px;
+  align-items: center;
+  background-color: #fdfdfd;
+  padding: 30px;
+  box-shadow: 10px 10px 5px 5px rgba(92, 92, 92, 0.3);
+  width: 100%;
+  
+  animation: slideIn 0.5s ease-out;
+}
+
+.system-settings-form{
+  display: flex;
+  flex-direction: column;
+  margin-left: 240px;
+  margin-right: 40px;
+  align-items: center;
+  border-radius: 10px;
+  background-color: #fdfdfd;
+  padding: 30px;
+  box-shadow: 10px 10px 5px 5px rgba(92, 92, 92, 0.3);
+  width: auto;
+  animation: slideIn 0.5s ease-out;
+}
+.system-settings-container {
+  display: flex;
+  width: 100%;
+
+  background-color: #eee;
+}
+
+.system-settings-content{
+  margin-top: 20px;
+}
+
+
+.Form-ip-provisioning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+
+.ip-phone-form{
+  display: flex;
+  margin-left: 240px;
+  margin-right: 40px;
+  margin-top: 20px;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  background-color:#ccc;
+  padding: 20px;
+  box-shadow: 10px 10px 5px 5px rgba(92, 92, 92, 0.3);
+  width: auto;
+  animation: slideIn 0.5s ease-out;
+}
+.ip-phone-form button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.ip-phone-form h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.ip-phone-form button:hover {
+  background-color: #0056b3;
+}
+
+.login-form21 {
+  display: flex;
+  margin-left: 200px;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fdfdfd;
+  padding: 20px;
+  box-shadow: 5px 5px rgba(92, 92, 92, 0.5);
+  width: auto;
+}
+
+.login-form21 h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-control21 {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.form-control21 label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-control21
+.form-control21{
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #272c33;
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.login-form21 button {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-form21 button:hover {
+  background-color: #0056b3;
+}
+
+/* IP Phone Block */
+.IpPhoneBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  gap: 2rem;
+}
+
+.RebootCss {
+  height: 80px;
+  width: 80px;
+  margin: 20px;
+}
+
+.ConfigurationPart {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.config-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.config-section h3 {
+  margin-bottom: 20px;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+/* Notification */
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 300px;
+}
+
+.notification.error {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.notification.success {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.notification.info {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.notification.warning {
+  background-color: #ff9800;
+  color: #fff;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.chart-container {
+  width: 70%; 
+  float: right; 
+  margin-top: 20px; 
+  margin-right: 20px;
+}
+
+/* Shell css */
+
+.shell {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #000;
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.shell-header {
+  background-color: #333;
+  padding: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.shell-title {
+  color: #00ff00; /* Green color for title */
+}
+
+.shell-body {
+  height: calc(100% - 30px); /* Adjust based on header height */
+  padding: 10px;
+  overflow-y: auto;
+}
+
+
+.shell-output {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  margin: 0;
+}
+
+
+/* Shell end css */
+
+/* Table Styles */
+.styled-table2232 {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: 'Arial', sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table2232 th,
+.styled-table2232 td {
+  padding: 12px 15px;
+}
+
+.styled-table2232 thead tr {
+  background-color: #cccccc;
+  color: #666666;
+  text-align: left;
+}
+
+.styled-table2232 tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table2232 tbody tr:nth-of-type(even) {
+  background-color: rgb(179, 179, 179);
+}
+
+.styled-table2232 tbody tr:last-of-type {
+  border-bottom: 2px solid #a5a5a5;
+}
+
+.styled-table2232 tbody tr.active-row {
+  font-weight: bold;
+  color: #585858;
+}
+
+/* Text Styles */
+.Textlight {
+  color: white;
+}
+
+.TextDark {
+  color: black;
+}
+
+/* Time Schedule Form */
+.time-schedule-container {
+  display: flex;
+  height: 100vh;
+}
+
+
+
+.content-container {
+  flex: 1;
+
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.Textlight21 {
+  max-width: 100%;
+  margin-top: 20px;
+  margin-right: 40px;
+  margin-left: 240px;
+  padding: 20px;
+  background-color: #e6e6e6;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(66, 66, 66, 0.3);
+}
+
+.file-upload{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="file"]{
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #4e4e4e;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #555555;
+  color: #ffffff;
+}
+
+input[type="file"] {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.file-upload {
+  display: flex;
+  align-items: center;
+}
+
+.file-upload button {
+  margin-left: 10px;
+}
+
+.form-group-flex {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+/* App Styles */
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+@keyframes slideRight {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.SipServerForm {
+  margin-left: 240px;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+  width: calc(100% - 270px);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease-out;
+}
+
+.SipServerForm .form-group90 {
+  margin-bottom: 15px;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.SipServerForm label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.SipServerForm input:focus,
+.SipServerForm button:focus {
+  outline: none;
+
+  border-color: #6482a3;
+}
+.black-box{
+  background-color: #292929;
+  width: 500px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  margin-left: 15%;
+  color: #eee;
+}
+
+.progress-bar {
+  width: 100%;
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+.progress-bar-fill {
+  height: 25px;
+  background-color: #4caf50;
+  text-align: center;
+  color: white;
+  line-height: 25px;
+}
+
+.SipServerForm button:hover {
+  background-color: #0056b3;
+}
+
+.SipServerForm button{
+  width: 200px;
+
+  border-radius: 5px;
+
+}
+.form-accounts-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.form-partition {
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+.button21{
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.system-setting-status {
+  background-color: #ffffff; 
+  border-radius: 12px; 
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); 
+  padding: 20px; 
+  max-width: 300px; 
+  margin: auto; 
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.setting-item h3 {
+  margin: 0; 
+  font-size: 1.2em; 
+  color: #333; 
+}
+
+.setting-item:last-child {
+  margin-bottom: 0;
+}
+
+
+
+.button2121{
+  align-items: center;
+  justify-content: center;
+}
+
+.SipServerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-left: 150px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+
+/* Container for the form */
+/* Container for the entire Linux provisioning page */
+.linux-container {
+  margin-left: 200px; /* Adjusted for the sidebar width */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align items to the start for proper vertical alignment */
+  padding: 20px;
+  box-sizing: border-box;
+  background: #eee
+}
+
+/* Styling for the image */
+.linux-img {
+  width: 40%;
+  height: auto; /* Maintain aspect ratio */
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 10px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Styling for the form */
+.linux-provisioning-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(60% - 40px); /* Adjust width to fit alongside the image and consider margins */
+  background-color: #ffffff; /* Form background color */
+  box-shadow: 5px 5px rgba(92, 92, 92, 0.3);
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 20px;
+  margin: 20px;
+}
+
+/* Styling for form groups */
+.form-group90 {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Styling for buttons */
+.linux-provisioning-form button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.linux-provisioning-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Shell component styling */
+.shell {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #000;
+  color: #fff;
+  width: calc(100% - 280px); /* Adjust width to account for sidebar and right margin */
+  height: auto; /* Adjust height to content */
+  margin-left: 240px; /* Align with sidebar */
+  margin-top: 20px;
+  margin-right: 40px; /* 40px margin from the right */
+  padding: 20px;
+  overflow: hidden;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+.shell-header {
+  background-color: #333;
+  padding: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.shell-title {
+  color: #00ff00; /* Green color for title */
+}
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Container for the auto-schedule list */
+.autoScheduleList {
+  margin-left: 240px;
+  margin-top: 20px;
+  margin-right: 40px;
+  width: calc(100% - 280px); /* Adjust width to fit the remaining space after sidebar */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Table Styles */
+.styled-table2232 {
+  width: 100%; /* Full width within the container */
+  border-collapse: collapse;
+  margin: 0; /* Remove default margins */
+  font-size: 0.9em;
+  font-family: 'Arial', sans-serif;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table2232 th,
+.styled-table2232 td {
+  padding: 12px 15px;
+  text-align: left; /* Align text to the left */
+}
+
+.styled-table2232 thead tr {
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.styled-table2232 tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table2232 tbody tr:nth-of-type(even) {
+  background-color: rgb(179, 179, 179);
+}
+
+.styled-table2232 tbody tr:last-of-type {
+  border-bottom: 2px solid #a5a5a5;
+}
+
+.styled-table2232 tbody tr.active-row {
+  font-weight: bold;
+  color: #585858;
+}
+
+/* Text Styles */
+.Textlight {
+  color: white;
+}
+
+.Textdark {
+  color: black;
+}
+
+.successfullList,
+.failList {
+  margin-bottom: 20px;
+}
+
+h3 {
+  color: #2b2b2b;
+}
+
+.styled-table2232 .fa-trash,
+.styled-table2232 .fa-download {
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.history-list{
+  margin-top: 20px;
+}
+
+/* PieChart.css */
+.pie-chart-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 450px;
+  padding: 20px;
+  height: calc(100vh - 100px); 
+  box-sizing: border-box;
+}
+
+.pie-chart {
+  width: 50%;
+  max-width: 600px; /* Adjust the max width as needed */
+  height: auto;
+}
