@@ -5,18 +5,19 @@ import Header from "../cards/header";
 import { useNavigate } from "react-router-dom";
 import Cisco from "../Image/cisco.png";
 import Tabs from "../cards/Tabs";
+import { BiArrowFromLeft } from "react-icons/bi";
 
 const Cisco_phone = () => {
 
   const [securePort, setSecurePort] = useState("");
   const [macAddress, setMacAddress] = useState("");
- // const [diagnosisData, setDiagnosisData] = useState("");
+  const [historyData, setHistoryData] = useState([]);
   const [account1_Extension, setAccount1_Extension] = useState("");
   const [account1_AuthenticateID, setAccount1_AuthenticateID] = useState("");
   const [account1_LocalSipPort, setAccount1_LocalSipPort] = useState("");
   const [sipServer, setSipServer] = useState("");
   const [activeTab, setActiveTab] = useState("Provisioning");
-  const [macAddresses, setMacAddresses] = useState([{ macAddress: "", Extension: "" }]);
+  const [macAddresses, setMacAddresses] = useState([{ macAddress: "", Extension: "" },]);
   const Token = Cookies.get(process.env.REACT_APP_COOKIENAME || "session");
   const BaseUrlTr069 = process.env.REACT_APP_API_tr069_URL || "localhost";
   const PORTTr069 = process.env.REACT_APP_API_tr069_PORT || "3000";
@@ -46,32 +47,43 @@ const Cisco_phone = () => {
         console.error("Error fetching data:", error);
       }
     };
-    fetchData();
-  }, [navigate, PORTTr069, BaseUrlTr069, Token]);
 
-  // const GetDiagnosisData = async (macAddress) => {
-  //   try {
-  //     const TokenData = JSON.parse(Token);
-  //     const response = await fetch(
-  //       `http://${BaseUrlTr069}:${PORTTr069}/diagnosis`,
-  //       {
-  //         method: "post",
-  //         headers: {
-  //           Authorization: "Bearer " + TokenData.AuthToken,
-  //           "Content-Type": "application/json"
-  //         },
-  //         body: JSON.stringify({ macAddress }),
-  //       }
-  //     );
-  //     const data = await response.json();
-  //     console.log(data);
-  //     if (data.status === 0) {
-  //       setDiagnosisData(data.data);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
+    const fetchData2 = async () => {
+      try {
+        const TokenData = JSON.parse(Token);
+        const response = await fetch(
+          `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManagerCiscoHistory/alldata`,
+          {
+            method: "get",
+            headers: {
+              Authorization: "Bearer " + TokenData.AuthToken,
+            },
+          }
+        );
+        const data = await response.json();
+        setHistoryData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    const interval = setInterval(() => {
+      fetchData2();
+      fetchData();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [
+    navigate,
+    PORTTr069,
+    BaseUrlTr069,
+    Token,
+    BaseUrlSpring,
+    PORTSpring,
+    setHistoryData,
+  ]);
+
+  const getDiagnosis = async (item) => {
+   // kartiik
+  };
 
   const CallSubmit = async (event) => {
     event.preventDefault();
@@ -84,11 +96,11 @@ const Cisco_phone = () => {
         port: account1_LocalSipPort,
         extension: account1_Extension,
         securePort: securePort,
-        macAddressBulk: macAddresses.map(item => item.macAddress),
-        macExtensionBulk: macAddresses.map(item => item.Extension)
+        macAddressBulk: macAddresses.map((item) => item.macAddress),
+        macExtensionBulk: macAddresses.map((item) => item.Extension),
       };
       const response = await fetch(
-        `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManager/ciscoConfig`,
+        `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManagerCiscoHistory/ciscoConfig`,
         {
           method: "POST",
           headers: {
@@ -109,7 +121,10 @@ const Cisco_phone = () => {
 
   const handleInputChange = (index, field, value) => {
     const updatedMacAddresses = [...macAddresses];
-    updatedMacAddresses[index] = { ...updatedMacAddresses[index], [field]: value };
+    updatedMacAddresses[index] = {
+      ...updatedMacAddresses[index],
+      [field]: value,
+    };
     setMacAddresses(updatedMacAddresses);
   };
 
@@ -125,7 +140,50 @@ const Cisco_phone = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "Diagnosis":
-        return <div className="diagnosis">DiagnosisData</div>;
+        return (
+          <>
+            <div>
+              <form
+                className="history-list"
+                style={{ marginLeft: "240px", marginRight: "40px" }}
+              >
+                <div className="form-group902232">
+                  <table className="styled-table2232">
+                    <thead>
+                      <tr>
+                        <th>Serial no.</th>
+                        <th>MAC address</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {historyData.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.id}</td>
+                          <td>{item.macAddress}</td>
+                          <td>{item.date}</td>
+                          <td>{item.time}</td>
+                          <td>
+                            <BiArrowFromLeft
+                              style={{
+                                cursor: "pointer",
+                                color: "blue",
+                                marginLeft: "10px",
+                              }}
+                              //onClick={getDiagnosis(item)}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </form>
+            </div>
+          </>
+        );
       case "Provisioning":
         return (
           <div>
