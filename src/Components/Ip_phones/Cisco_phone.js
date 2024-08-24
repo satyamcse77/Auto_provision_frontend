@@ -6,10 +6,18 @@ import { useNavigate } from "react-router-dom";
 import Cisco from "../Image/cisco.png";
 import Tabs from "../cards/Tabs";
 import { BiArrowFromLeft } from "react-icons/bi";
+import { FaCircle, FaRegCircle, FaTimes } from "react-icons/fa";
 
 const Cisco_phone = () => {
 
+  const [progressOpen, setProgressOpen] = useState(false);
+  const [dhcp, setDhcp] = useState(true);
+  const [defaultFile, setDefaultFile] = useState(true);
+  const [tftp, setTftp] = useState(true);
+  const [path, setPath] = useState(true);
+  const [currentStep, setCurrentStep] = useState(0);
   const [securePort, setSecurePort] = useState("");
+  const [totalSteps, setTotalSteps] = useState(null);
   const [macAddress, setMacAddress] = useState("");
   const [historyData, setHistoryData] = useState([]);
   const [account1_Extension, setAccount1_Extension] = useState("");
@@ -66,11 +74,17 @@ const Cisco_phone = () => {
         console.error("Error fetching data:", error);
       }
     };
-    const interval = setInterval(() => {
+    const interval1 = setInterval(() => {
       fetchData2();
       fetchData();
-    }, 5000);
-    return () => clearInterval(interval);
+    }, 5000); 
+    const interval2 = setInterval(() => {
+      setCurrentStep((prevStep) => (prevStep + 1) % totalSteps);
+    }, 2000);
+    return () => {
+      clearInterval(interval1);
+      clearInterval(interval2);
+    };
   }, [
     navigate,
     PORTTr069,
@@ -79,11 +93,32 @@ const Cisco_phone = () => {
     BaseUrlSpring,
     PORTSpring,
     setHistoryData,
+    totalSteps
   ]);
 
-  const getDiagnosis = async (item) => {
-   // kartiik
+  const percentage = (currentStep / (totalSteps - 1)) * 100;
+
+  const conditions = {
+    0: dhcp ? "Dhcp on" :"Dhcp off",
+    1: tftp ? "Tftp on" :"Tftp off",
+    2: path ? "File present" :"File not present",
+    3: defaultFile ? "Default file present" :"Default file not present",
   };
+
+  const getDiagnosis = async (itemData) => {
+    const item = itemData;
+    console.log(item);
+    setDhcp(item.dhcp);
+    setTftp(item.tftp);
+    setPath(item.filePresent);
+    setDefaultFile(item.defaultFile);
+    await setTotalSteps(Object.keys(conditions).length);
+    setProgressOpen(true);
+  };
+
+  const CloseRightPopUp = ()=> {
+    setProgressOpen(false);
+  }
 
   const CallSubmit = async (event) => {
     event.preventDefault();
@@ -172,7 +207,7 @@ const Cisco_phone = () => {
                                 color: "blue",
                                 marginLeft: "10px",
                               }}
-                              //onClick={getDiagnosis(item)}
+                              onClick={() => getDiagnosis(item)}
                             />
                           </td>
                         </tr>
@@ -181,6 +216,48 @@ const Cisco_phone = () => {
                   </table>
                 </div>
               </form>
+            </div>
+            <div>
+              {progressOpen && (
+                <div
+                  className={`progress-sidebar ${progressOpen ? "active" : ""}`}
+                  ref={null}
+                >
+                  <div className="progress-container">
+                    <div className="progress-container">
+                      <div className="close-icon" onClick={CloseRightPopUp}>
+                        <FaTimes />
+                      </div>
+                      <div className="progress-bar">
+                        <div
+                          className="progress-indicator"
+                          style={{ width: `${percentage}%` }}
+                        ></div>
+                      </div>
+                      <div className="steps">
+                        {Object.keys(conditions).map((index) => (
+                          <div key={index} className="step">
+                            <span className="icon">
+                              {index <= currentStep ? (
+                                <FaCircle className="icon-completed" />
+                              ) : (
+                                <FaRegCircle className="icon-incomplete" />
+                              )}
+                            </span>
+                            <span
+                              className={`step-label ${
+                                index <= currentStep ? "completed" : ""
+                              }`}
+                            >
+                              {conditions[index]}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </>
         );

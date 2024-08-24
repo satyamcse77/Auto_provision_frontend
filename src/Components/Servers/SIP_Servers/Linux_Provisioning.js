@@ -41,7 +41,7 @@ const LinuxProvisioning = () => {
         console.error("Error fetching data:", error);
       }
     };
-    fetchData();
+    // fetchData();
   }, [navigate, BaseUrlTr069, PORTTr069, Token]);
 
   const handleInputChange = (index, value) => {
@@ -62,32 +62,27 @@ const LinuxProvisioning = () => {
 
   const RebootCall = async () => {
     try {
-      if (ipAddresses.length === 0) {
-        alert("At least one IP address is required.");
-        return;
-      }
-      const response = await fetch(
-        `http://${BaseUrlNode}:${PORTNode}/api/devicemanager/linux/reboot`,
+      const TokenData = JSON.parse(Token);
+      let result = await fetch(
+        `http://${BaseUrlNode}:${PORTNode}/linuxReboot`,
         {
-          method: "POST",
+          method: "post",
           headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + Token,
+            Authorization: "Bearer " + TokenData.AuthToken,
           },
           body: JSON.stringify({ devices: ipAddresses }),
         }
       );
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log(data);
-      if (data.success === true) {
-        const resultsString = JSON.stringify(data.results);
-        setShellData(resultsString);
+      result = await result.json();
+      if (result.status === 0) {
+        setShellData(result.responce);
+        alert(`Success: ${result.message}`);
+      } else {
+        setShellData(result.responce);
+        alert(`Error: ${result.message}`);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Server Error.");
     }
   };
 
@@ -113,8 +108,7 @@ const LinuxProvisioning = () => {
         alert(`Error: ${result.message}`);
       }
     } catch (error) {
-      alert("Error updating firmware file. Please try again.");
-      console.error("Error uploading file:", error);
+      console.error("Server Error.");
     }
   };
 

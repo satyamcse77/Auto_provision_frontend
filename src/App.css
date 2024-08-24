@@ -60,10 +60,6 @@ button:hover {
   margin: 20px 0;
 }
 
-
-
-
-
 /* Sidebar */
 .sidebar {
   width: 200px;
@@ -955,3 +951,117 @@ h3 {
   max-width: 600px; /* Adjust the max width as needed */
   height: auto;
 }
+
+/* Right hand side bar */
+
+.close-icon {
+  position: absolute;
+  top: -6px;
+  left: 10px;
+  font-size: 30px;
+  cursor: pointer;
+  color: red;
+}
+
+.progress-sidebar {
+  position: fixed;
+  top: 40%;
+  right: 0;
+  width: 300px; /* Adjust width as needed */
+  max-height: 80%; /* Restrict height, you can adjust as needed */
+  background: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2); /* Shadow for card effect */
+  transform: translateX(100%); /* Start hidden (off-screen) */
+  transition: transform 0.5s ease-in-out; /* Smooth sliding animation */
+  z-index: 1000; /* Ensure it's above other content */
+  overflow-y: auto; /* Enable scrolling if content exceeds height */
+  padding: 20px; /* Add padding inside the card */
+}
+
+/* Show the sidebar when active */
+.progress-sidebar.active {
+  transform: translateX(0); /* Slide in */
+}
+
+/* Ensure correct layout and spacing */
+.diagnosis {
+  display: flex;
+  flex-direction: column; /* Align items vertically */
+  align-items: flex-end; /* Align items to the right */
+  padding: 16px; /* Add some padding if needed */
+}
+
+.diagnosis button {
+  width: auto;
+}
+
+/* Optional: If you want space between the button and the sidebar */
+.toggle-button {
+  margin-bottom: 20px; /* Space between the button and the sidebar */
+}
+
+/* Sidebar content styling */
+.progress-container {
+  width: 100%; /* Full width of the card */
+  height: 100%; /* Full height of the card */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-bar {
+  position: relative;
+  width: 100%;
+  background: #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px; /* Adjust spacing between bar and steps */
+  overflow: hidden;
+}
+
+.progress-indicator {
+  width: 100%;
+  background: #4caf50;
+  height: 0; /* Initially 0%, will be updated via inline style */
+  transition: height 0.5s ease-in-out;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.step {
+  text-align: center;
+  position: relative;
+  margin-bottom: 20px; /* Adjust spacing between steps */
+}
+
+.step.completed {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+/* Remove the vertical connector line */
+.step::before {
+  content: none; /* Remove connector for all steps */
+}
+
+.icon-completed {
+  color: green; /* Change this to any shade of green you prefer */
+}
+
+.icon-incomplete {
+  color: lightgray; /* Adjust if necessary */
+}
+
+.icon {
+  margin-right: 8px;
+}
+
+.step-label.completed {
+  font-weight: bold;
+}
+
+/* end */
