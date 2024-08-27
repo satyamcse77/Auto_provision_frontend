@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../Sidebar";
 import Cookies from "js-cookie";
 import Header from "../cards/header";
@@ -9,13 +9,13 @@ import { BiArrowFromLeft } from "react-icons/bi";
 import { FaCircle, FaRegCircle, FaTimes } from "react-icons/fa";
 
 const Cisco_phone = () => {
-
   const [progressOpen, setProgressOpen] = useState(false);
   const [dhcp, setDhcp] = useState(true);
   const [defaultFile, setDefaultFile] = useState(true);
   const [tftp, setTftp] = useState(true);
   const [path, setPath] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
+  const progressSidebarRef = useRef(null);
   const [securePort, setSecurePort] = useState("");
   const [totalSteps, setTotalSteps] = useState(null);
   const [macAddress, setMacAddress] = useState("");
@@ -25,7 +25,9 @@ const Cisco_phone = () => {
   const [account1_LocalSipPort, setAccount1_LocalSipPort] = useState("");
   const [sipServer, setSipServer] = useState("");
   const [activeTab, setActiveTab] = useState("Provisioning");
-  const [macAddresses, setMacAddresses] = useState([{ macAddress: "", Extension: "" },]);
+  const [macAddresses, setMacAddresses] = useState([
+    { macAddress: "", Extension: "" },
+  ]);
   const Token = Cookies.get(process.env.REACT_APP_COOKIENAME || "session");
   const BaseUrlTr069 = process.env.REACT_APP_API_tr069_URL || "localhost";
   const PORTTr069 = process.env.REACT_APP_API_tr069_PORT || "3000";
@@ -77,7 +79,7 @@ const Cisco_phone = () => {
     const interval1 = setInterval(() => {
       fetchData2();
       fetchData();
-    }, 5000); 
+    }, 5000);
     const interval2 = setInterval(() => {
       setCurrentStep((prevStep) => (prevStep + 1) % totalSteps);
     }, 2000);
@@ -93,16 +95,32 @@ const Cisco_phone = () => {
     BaseUrlSpring,
     PORTSpring,
     setHistoryData,
-    totalSteps
+    totalSteps,
   ]);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        progressSidebarRef.current &&
+        !progressSidebarRef.current.contains(event.target)
+      ) {
+        setProgressOpen(false); // Close the progress sidebar
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [progressSidebarRef]);
 
   const percentage = (currentStep / (totalSteps - 1)) * 100;
 
   const conditions = {
-    0: dhcp ? "Dhcp on" :"Dhcp off",
-    1: tftp ? "Tftp on" :"Tftp off",
-    2: path ? "File present" :"File not present",
-    3: defaultFile ? "Default file present" :"Default file not present",
+    0: dhcp ? "Dhcp on" : "Dhcp off",
+    1: tftp ? "Tftp on" : "Tftp off",
+    2: path ? "File present" : "File not present",
+    3: defaultFile ? "Default file present" : "Default file not present",
   };
 
   const getDiagnosis = async (itemData) => {
@@ -116,9 +134,9 @@ const Cisco_phone = () => {
     setProgressOpen(true);
   };
 
-  const CloseRightPopUp = ()=> {
+  const CloseRightPopUp = () => {
     setProgressOpen(false);
-  }
+  };
 
   const CallSubmit = async (event) => {
     event.preventDefault();
@@ -171,7 +189,6 @@ const Cisco_phone = () => {
   const addMacAddress = () => {
     setMacAddresses([...macAddresses, { macAddress: "", Extension: "" }]);
   };
-
   const renderTabContent = () => {
     switch (activeTab) {
       case "Diagnosis":
@@ -221,39 +238,57 @@ const Cisco_phone = () => {
               {progressOpen && (
                 <div
                   className={`progress-sidebar ${progressOpen ? "active" : ""}`}
-                  ref={null}
+                  ref={progressSidebarRef}
+                  onClick={(e) => {
+                    // Close the sidebar when clicking outside
+                    if (e.target === progressSidebarRef.current) {
+                      setProgressOpen(false);
+                    }
+                  }}
                 >
                   <div className="progress-container">
-                    <div className="progress-container">
-                      <div className="close-icon" onClick={CloseRightPopUp}>
-                        <FaTimes />
-                      </div>
-                      <div className="progress-bar">
+                    <div className="progress-bar">
+                      <div
+                        className="progress-indicator"
+                        style={{ width: `${percentage}%` }}
+                      ></div>
+                    </div>
+                    <div className="steps">
+                      {Object.keys(conditions).map((index) => (
                         <div
-                          className="progress-indicator"
-                          style={{ width: `${percentage}%` }}
-                        ></div>
-                      </div>
-                      <div className="steps">
-                        {Object.keys(conditions).map((index) => (
-                          <div key={index} className="step">
-                            <span className="icon">
-                              {index <= currentStep ? (
-                                <FaCircle className="icon-completed" />
-                              ) : (
-                                <FaRegCircle className="icon-incomplete" />
-                              )}
-                            </span>
-                            <span
-                              className={`step-label ${
-                                index <= currentStep ? "completed" : ""
+                          key={index}
+                          className={`step step-${parseInt(index) + 1} ${
+                            index <= currentStep ? "completed" : "incomplete"
+                          }`}
+                        >
+                          <span
+                            className="icon"
+                            style={{ marginLeft: "-20px" }}
+                          >
+                            <FaCircle
+                              className={
+                                conditions[index].includes("on")
+                                  ? "icon-completed"
+                                  : "icon-incomplete"
+                              }
+                            />
+                          </span>
+                          <span
+                            className={`step-label ${
+                              index <= currentStep ? "completed" : "incomplete"
+                            }`}
+                          >
+                            {conditions[index]}
+                          </span>
+                          {index < Object.keys(conditions).length - 1 && (
+                            <div
+                              className={`line ${
+                                index < currentStep ? "completed" : "incomplete"
                               }`}
-                            >
-                              {conditions[index]}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
+                            ></div>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>

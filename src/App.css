@@ -953,16 +953,41 @@ h3 {
 }
 
 /* Right hand side bar */
-
-.close-icon {
-  position: absolute;
-  top: -6px;
-  left: 10px;
-  font-size: 30px;
-  cursor: pointer;
-  color: red;
+/* Keyframes for visibility animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
+/* Common step style */
+.step {
+  opacity: 0; /* Start hidden */
+  animation: fadeIn .2s ease-out forwards; /* Apply animation */
+  animation-delay: 0s; /* Default delay */
+}
+
+/* Specific delays for each step */
+.step-1 {
+  animation-delay: 0s;
+}
+
+.step-2 {
+  animation-delay: 1s; /* Delay for the second step */
+}
+
+.step-3 {
+  animation-delay: 2s; /* Delay for the third step */
+}
+
+.step-4 {
+  animation-delay: 3s; /* Delay for the fourth step */
+}
+
+/* CSS for progress sidebar */
 .progress-sidebar {
   position: fixed;
   top: 40%;
@@ -983,35 +1008,10 @@ h3 {
   transform: translateX(0); /* Slide in */
 }
 
-/* Ensure correct layout and spacing */
-.diagnosis {
-  display: flex;
-  flex-direction: column; /* Align items vertically */
-  align-items: flex-end; /* Align items to the right */
-  padding: 16px; /* Add some padding if needed */
-}
-
-.diagnosis button {
-  width: auto;
-}
-
-/* Optional: If you want space between the button and the sidebar */
-.toggle-button {
-  margin-bottom: 20px; /* Space between the button and the sidebar */
-}
-
-/* Sidebar content styling */
-.progress-container {
-  width: 100%; /* Full width of the card */
-  height: 100%; /* Full height of the card */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .progress-bar {
   position: relative;
   width: 100%;
+  height: 100%;
   background: #ddd;
   border-radius: 5px;
   margin-bottom: 20px; /* Adjust spacing between bar and steps */
@@ -1020,48 +1020,58 @@ h3 {
 
 .progress-indicator {
   width: 100%;
-  background: #4caf50;
+  background: #4caf50; /* Default green */
   height: 0; /* Initially 0%, will be updated via inline style */
   transition: height 0.5s ease-in-out;
 }
 
-.steps {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.step {
-  text-align: center;
-  position: relative;
-  margin-bottom: 20px; /* Adjust spacing between steps */
-}
-
-.step.completed {
-  color: #4caf50;
-  font-weight: bold;
-}
-
-/* Remove the vertical connector line */
-.step::before {
-  content: none; /* Remove connector for all steps */
-}
-
 .icon-completed {
-  color: green; /* Change this to any shade of green you prefer */
+  color: green; /* Green for completed steps */
 }
 
 .icon-incomplete {
-  color: lightgray; /* Adjust if necessary */
+  color: red; /* Red for incomplete steps */
 }
 
 .icon {
   margin-right: 8px;
 }
-
-.step-label.completed {
-  font-weight: bold;
+.steps {
+  display: flex;
+  flex-direction: column; 
+  gap: 2rem;/* Stack items vertically */
+  align-items: flex-start; /* Align items to the start of the flex container */
+  margin-left: 20px; /* Adjust as needed */
 }
 
-/* end */
+.step {
+  display: flex;
+  align-items: center; /* Center items vertically within the step */
+  margin-bottom: 10px; /* Space between steps */
+}
+
+.icon {
+  margin-right: 10px; /* Space between icon and label */
+  font-size: 20px; /* Adjust size as needed */
+}
+
+.step-label {
+  font-size: 16px; /* Adjust size as needed */
+}
+
+/* Additional styles for completed/incomplete labels and icons */
+.icon-completed {
+  color: green; /* Color for completed items */
+}
+
+.icon-incomplete {
+  color: rgb(250, 25, 25); /* Color for incomplete items */
+}
+
+.completed {
+  font-weight: bold; /* Style for completed labels */
+}
+
+.incomplete {
+  color: gray; /* Style for incomplete labels */
+}
