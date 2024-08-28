@@ -88,7 +88,7 @@ export default function SipServer() {
           <div style={{ display: "flex" }}>
             <div className="form-group90">
               <img
-                style={{marginLeft:"100px", height: "220px", width: "120px" }}
+                style={{marginLeft:"90px", height: "250px", width: "220px" }}
                 src={IP2LG}
                 alt="Loading..."
               />

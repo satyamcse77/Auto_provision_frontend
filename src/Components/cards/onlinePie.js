@@ -23,10 +23,9 @@ const OnlinePie = () => {
     if (!Token) {
       navigate("/log-in");
     }
-
+    const TokenData = JSON.parse(Token);
     const fetchAuth = async () => {
       try {
-        const TokenData = JSON.parse(Token);
         const response = await fetch(
           `http://${BaseUrlTr069}:${PORTTr069}/checkAuth`,
           {
@@ -36,7 +35,6 @@ const OnlinePie = () => {
             },
           }
         );
-
         const data = await response.json();
         if (data.status !== 1) {
           navigate("/log-in");
@@ -49,25 +47,32 @@ const OnlinePie = () => {
 
     const fetchDevices = async () => {
       try {
-        const response = await fetch(
-          `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManagerInfo/onlineDevices`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: Token,
-            },
+            let response = await fetch(
+              `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManagerInfo/allData`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: TokenData.AuthToken,
+                },
+              }
+            );
+            response = await response.json();
+            if (response) {
+              let count = 0, total = 0;
+              response.forEach((item) => {
+                if (item.ping && item.ipAddress) {
+                  count++;
+                }
+                if(item)
+                total++;
+              });
+              setApiData(total-count);
+              setOnlineDevices(count);
+            }
+          } catch (error) {
+            console.error("Error fetching data:", error);
           }
-        );
-        const data = await response.json();
-        if (data) {
-         
-         await setOnlineDevices(data.value);
-          await setApiData(data.total);
-        }
-      } catch (error) {
-        console.error("Error fetching device data:", error);
-      }
-    };
+        };
 
     fetchAuth();
     fetchDevices();

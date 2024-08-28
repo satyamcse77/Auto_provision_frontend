@@ -18,6 +18,7 @@ export default function Fault() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    
     if (!Token) navigate("/log-in");
     const fetchData = async () => {
       try {
@@ -32,16 +33,14 @@ export default function Fault() {
           }
         );
         const data = await response.json();
-        if (data.status === 1) {
-          console.log("Token is valid.");
-        } else {
+        if (data.status !== 1) {
           navigate("/log-in");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    // fetchData();
+    fetchData();
 
     const fetchData2 = async () => {
       try {
@@ -64,35 +63,10 @@ export default function Fault() {
         console.error("Error fetching data:", error);
       }
     };
-    // const intervalId = setInterval(() => {
-    //   fetchData2();
-    // }, 10000);
-    // return () => clearInterval(intervalId);
-
-    const fetchData3 = async () => {
-      const TokenData = JSON.parse(Token);
-      try {
-        const response = await fetch(
-          `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManagerInfo/all`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: "Bearer " + TokenData.AuthToken,
-            },
-          }
-        );
-        const data = await response.json();
-        if (data) {
-          console.log("Api call successful of add devices.");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-  //   const intervalId = setInterval(() => {
-  //     fetchData3();
-  //   }, 10000);
-  //  return () => clearInterval(intervalId);
+    const intervalId = setInterval(() => {
+      fetchData2();
+    }, 5000);
+    return () => clearInterval(intervalId);
   }, [
     navigate,
     setApiData,
@@ -159,21 +133,14 @@ export default function Fault() {
                   <td>{item.productClass}</td>
                   <td>{item.ipAddress?item.ipAddress:"0.0.0.0"}</td>
                   <td>
-                    <FontAwesomeIcon
-                      icon={faCircle}
-                      style={{
-                        cursor: "pointer",
-                        color: item.ping ? "green" : "red",
-                        marginLeft: "10px",
-                      }}
-                    />
+                    {item.ping ?`${item.ping} ms`:""}
                   </td>
                   <td>
                     <FontAwesomeIcon
                       icon={faCircle}
                       style={{
                         cursor: "pointer",
-                        color: item.activeDevice ? "green" : "red",
+                        color: item.ping && item.ipAddress ? "green" : "red",
                         marginLeft: "10px",
                       }}
                     />

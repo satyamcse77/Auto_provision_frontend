@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Cisco from "../Image/cisco.png";
 import Tabs from "../cards/Tabs";
 import { BiArrowFromLeft } from "react-icons/bi";
-import { FaCircle, FaRegCircle, FaTimes } from "react-icons/fa";
+import { FaCircle } from "react-icons/fa";
 
 const Cisco_phone = () => {
   const [progressOpen, setProgressOpen] = useState(false);
@@ -103,7 +103,7 @@ const Cisco_phone = () => {
         progressSidebarRef.current &&
         !progressSidebarRef.current.contains(event.target)
       ) {
-        setProgressOpen(false); // Close the progress sidebar
+        setProgressOpen(false);
       }
     };
 
@@ -132,10 +132,6 @@ const Cisco_phone = () => {
     setDefaultFile(item.defaultFile);
     await setTotalSteps(Object.keys(conditions).length);
     setProgressOpen(true);
-  };
-
-  const CloseRightPopUp = () => {
-    setProgressOpen(false);
   };
 
   const CallSubmit = async (event) => {
@@ -305,44 +301,35 @@ const Cisco_phone = () => {
               onSubmit={CallSubmit}
             >
               <div style={{ display: "flex" }} className="form-partition">
-                <div className="form-group90">
-                  <img
-                    style={{ height: "250px", width: "240px" }}
-                    src={Cisco}
-                    alt="Cisco Phone"
-                  />
-                </div>
-                <div className="form-group90">
-                  <label htmlFor="macAddress">
-                    Mac Address<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="macAddress"
-                    value={macAddress}
-                    onChange={(e) => setMacAddress(e.target.value)}
-                    placeholder="Enter MAC address"
-                    required
-                  />
-                  <div className="form-group90">
-                    <label htmlFor="Sip_server_ip">
-                      SIP Server IP<span style={{ color: "red" }}>*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="Sip_server_ip"
-                      value={sipServer}
-                      onChange={(e) => setSipServer(e.target.value)}
-                      placeholder="Enter SIP server IP"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="form-accounts-container">
-                <div className="form-partition">
-                  <div className="black-box">
-                    <div className="form-group90">
+                <img
+                  style={{ height: "250px", width: "240px" }}
+                  src={Cisco}
+                  alt="Cisco Phone"
+                />
+                <div>
+                <div className="black-box" style={{marginRight: "200px", marginBottom: "50px"}}>
+                      <label htmlFor="macAddress">
+                        Mac Address<span style={{ color: "red" }}>*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="macAddress"
+                        value={macAddress}
+                        onChange={(e) => setMacAddress(e.target.value)}
+                        placeholder="Enter MAC address"
+                        required
+                      />
+                      <label htmlFor="Sip_server_ip">
+                        SIP Server IP<span style={{ color: "red" }}>*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="Sip_server_ip"
+                        value={sipServer}
+                        onChange={(e) => setSipServer(e.target.value)}
+                        placeholder="Enter SIP server IP"
+                        required
+                      />
                       <label htmlFor="account1_LocalSipPort">SIP Port:</label>
                       <input
                         type="number"
@@ -354,7 +341,6 @@ const Cisco_phone = () => {
                         placeholder="Enter SIP port"
                         required
                       />
-                    </div>
                     <div className="form-group90">
                       <label htmlFor="securePort">Secure SIP Port:</label>
                       <input
@@ -393,58 +379,66 @@ const Cisco_phone = () => {
                       />
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="form-group90">
-                <button type="submit" className="button21">
-                  Provision
-                </button>
-                <button
-                  type="button"
-                  className="button21"
-                  onClick={addMacAddress}
-                >
-                  Add +
-                </button>
-                {macAddresses.map((item, index) => (
-                  <div className="form-group90" key={index}>
-                    <label htmlFor={`macAddress-${index}`}>
-                      Enter macAddress and extension of device {index + 2}
-                    </label>
-                    <div style={{ display: "flex" }}>
-                      <input
-                        type="text"
-                        id={`macAddress-${index}`}
-                        value={item.macAddress}
-                        onChange={(e) =>
-                          handleInputChange(index, "macAddress", e.target.value)
-                        }
-                        placeholder="Enter MAC address"
-                        required
-                      />
-                      <input
-                        type="number"
-                        id={`Extension-${index}`}
-                        value={item.port}
-                        onChange={(e) =>
-                          handleInputChange(index, "Extension", e.target.value)
-                        }
-                        placeholder="Enter extension"
-                        required
-                      />
-                      {index > -1 && (
-                        <button
-                          type="button"
-                          className="button21"
-                          onClick={() => removeMacAddress(index)}
-                          style={{ marginLeft: "10px", height: "50px" }}
-                        >
-                          Remove
-                        </button>
-                      )}
-                    </div>
+                  <div className="form-group90">
+                    <button type="submit" className="button21">
+                      Provision
+                    </button>
+                    <button
+                      type="button"
+                      className="button21"
+                      onClick={addMacAddress}
+                    >
+                      Add +
+                    </button>
+                    {macAddresses.map((item, index) => (
+                      <div className="form-group90" key={index}>
+                        <label htmlFor={`macAddress-${index}`}>
+                          Enter macAddress and extension of device {index + 2}
+                        </label>
+                        <div style={{ display: "flex" }}>
+                          <input
+                            type="text"
+                            id={`macAddress-${index}`}
+                            value={item.macAddress}
+                            onChange={(e) =>
+                              handleInputChange(
+                                index,
+                                "macAddress",
+                                e.target.value
+                              )
+                            }
+                            placeholder="Enter MAC address"
+                            required
+                          />
+                          <input
+                            type="number"
+                            id={`Extension-${index}`}
+                            value={item.port}
+                            onChange={(e) =>
+                              handleInputChange(
+                                index,
+                                "Extension",
+                                e.target.value
+                              )
+                            }
+                            placeholder="Enter extension"
+                            required
+                          />
+                          {index > -1 && (
+                            <button
+                              type="button"
+                              className="button21"
+                              onClick={() => removeMacAddress(index)}
+                              style={{ marginLeft: "10px", height: "50px" }}
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </form>
           </div>

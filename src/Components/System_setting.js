@@ -304,6 +304,7 @@ export default function SystemSetting() {
         );
       case "Status":
         return (
+          <>
           <div className="system-setting-status">
             <div className="setting-item">
               <h3>DHCP</h3>
@@ -312,14 +313,17 @@ export default function SystemSetting() {
                 onSwitchChange={handleSwitchChange}
               />
             </div>
-            <div className="setting-item">
-              <h3>TFTP</h3>
-              <StatusSwitch
-                DhcpOn={TftpOn}
-                onSwitchChange={handleSwitchChange2}
-              />
-            </div>
           </div>
+          <div className="system-setting-status" style={{marginTop: "20px"}}>
+          <div className="setting-item">
+            <h3>TFTP</h3>
+            <StatusSwitch
+              DhcpOn={TftpOn}
+              onSwitchChange={handleSwitchChange2}
+            />
+          </div>
+        </div>
+          </>
         );
       default:
         return <div>Select a tab to view content</div>;

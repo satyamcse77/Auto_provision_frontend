@@ -7,7 +7,7 @@ import Logo from "./Image/logoDark.png";
 
 const SidebarNav = styled.nav`
   background-color: #0a0a0a;
-  width: 200px;
+  width: 220px;
   height: 100vh;
   display: flex;
   flex-direction: column;

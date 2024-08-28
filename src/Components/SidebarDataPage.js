@@ -3,7 +3,7 @@ import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
 import { FaServer } from 'react-icons/fa6';
-import { MdWifi, MdNetworkCell, MdChecklist, MdOutlineDisabledByDefault, MdFileUpload } from 'react-icons/md';
+import { MdWifi, MdNetworkCell, MdChecklist, MdFileUpload } from 'react-icons/md';
 import { RiCalendarScheduleFill } from 'react-icons/ri';
 import { CiTimer } from 'react-icons/ci';
 import { IoSettings, IoLogOutOutline } from 'react-icons/io5';
@@ -33,7 +33,7 @@ const SidebarDataPage = () => {
       icon: <AiIcons.AiFillHome style={iconColor} />
     },
     {
-      title: 'Device Detail',
+      title: <span style={{ fontSize: '14px' }}>TR069 Device Detail</span>,
       icon: <BsTelephoneFill style={iconColor} />,
       iconClosed: <RiIcons.RiArrowDownSFill style={iconColor} />,
       iconOpened: <RiIcons.RiArrowUpSFill style={iconColor} />,
@@ -126,11 +126,6 @@ const SidebarDataPage = () => {
       title: 'System Settings',
       path: '/system-setting',
       icon: <IoSettings style={iconColor} />
-    },
-    {
-      title: 'Fault Logs',
-      path: '/fault',
-      icon: <MdOutlineDisabledByDefault style={iconColor} />
     },
     {
       title: 'History',

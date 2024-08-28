@@ -45,7 +45,7 @@ export default function LogIn() {
         }
         const cookieString = `session=${JSON.stringify(Data)}`;
         document.cookie = cookieString;
-
+        
         navigate("/");
       } else {
         alert("Incorrect Email and password.");
