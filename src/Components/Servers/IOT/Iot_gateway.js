@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Navbar from "../../Sidebar";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import Header from '../../cards/header';
 
 export default function Iot_gateway() {
 
@@ -26,9 +27,7 @@ export default function Iot_gateway() {
           }
         );
         const data = await response.json();
-        if (data.status === 1) {
-          console.log("Token is valid.");
-        } else {
+        if (data.status !== 1) {
           navigate("/log-in");
         }
       } catch (error) {
@@ -41,6 +40,9 @@ export default function Iot_gateway() {
   return (
     <>
       <Navbar />
+      <Header 
+      Title='IOT Gateway'
+      breadcrumb ='/Servers/IOT_Gateway'/>
       <h1>IOT Gateway</h1>
     </>
   );

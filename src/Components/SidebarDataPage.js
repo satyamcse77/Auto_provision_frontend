@@ -93,6 +93,12 @@ const SidebarDataPage = () => {
           path: '/iot_gateway',
           icon: <MdWifi style={iconColor} />,
           cName: 'sub-nav'
+        },
+        {
+          title: 'Call Server',
+          path: '/call-server',
+          icon: <FaServer style={iconColor} />,
+          cName: 'sub-nav'
         }
       ]
     },

@@ -41,7 +41,7 @@ const LinuxProvisioning = () => {
         console.error("Error fetching data:", error);
       }
     };
-    // fetchData();
+    fetchData();
   }, [navigate, BaseUrlTr069, PORTTr069, Token]);
 
   const handleInputChange = (index, value) => {
