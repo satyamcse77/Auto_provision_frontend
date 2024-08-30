@@ -70,8 +70,6 @@ export default function CallServer() {
       );
       const data = await response.json();
       if (data.status === 0) {
-        console.log(data.responses);
-        console.log(data.responses);
         const formattedResponses = data.responses.map(item => ({
           ipAddress: item.IpAddress.ipAddress,
           result: item.result.responce

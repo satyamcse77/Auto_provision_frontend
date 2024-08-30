@@ -14,6 +14,7 @@ import OnlineDevices from "./Components/cards/onlinePie";
 import CiscoPhone from "./Components/Ip_phones/Cisco_phone";
 import IotGateway from "./Components/Servers/IOT/Iot_gateway";
 import CallServer from "./Components/Servers/CallServer/Call Server";
+import AddIpAddress from "./Components/Servers/AddIpAddress";
 
 function App() {
   document.body.style.backgroundColor = '#4a4a4a';
@@ -37,6 +38,7 @@ function App() {
           <Route path="/iot_gateway" element={<IotGateway/>}/>
           <Route path="/online-devices" element={<OnlineDevices/>}/>
           <Route path="/call-server" element={<CallServer/>}/>
+          <Route path="/add-IPAddress" element={<AddIpAddress/>}/>
 
         </Routes>
       </BrowserRouter>

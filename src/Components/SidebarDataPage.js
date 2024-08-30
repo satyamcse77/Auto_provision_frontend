@@ -2,7 +2,7 @@ import React from 'react';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
-import { FaServer } from 'react-icons/fa6';
+import { FaServer, FaAddressCard } from 'react-icons/fa6';
 import { MdWifi, MdNetworkCell, MdChecklist, MdFileUpload } from 'react-icons/md';
 import { RiCalendarScheduleFill } from 'react-icons/ri';
 import { CiTimer } from 'react-icons/ci';
@@ -98,6 +98,12 @@ const SidebarDataPage = () => {
           title: 'Call Server',
           path: '/call-server',
           icon: <FaServer style={iconColor} />,
+          cName: 'sub-nav'
+        },
+        {
+          title: 'Add IPAddress to server',
+          path: '/add-IPAddress',
+          icon: <FaAddressCard style={iconColor} />,
           cName: 'sub-nav'
         }
       ]
