@@ -7,10 +7,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function AddIpAddress() {
+
   const navigate = useNavigate();
   const [apiData, setApiData] = useState([]);
   const [ipAddresses, setIpAddresses] = useState([]);
   const [deleteNumber, setDeleteNumber] = useState(-1);
+  const [showNumber, setShowNumber] = useState(-1);
   const BaseUrlTr069 = process.env.REACT_APP_API_tr069_URL || "localhost";
   const PORTTr069 = process.env.REACT_APP_API_tr069_PORT || "3000";
   const CookieName = process.env.REACT_APP_COOKIENAME || "session";
@@ -149,11 +151,22 @@ export default function AddIpAddress() {
       if (data.status === 0) {
         setDeleteNumber(provision);
         setApiData(data.ips);
+        setShowNumber(provision);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
+  const HeaderName = () => {
+    let string = "";
+    console.log(showNumber)
+    if (showNumber === 0) string = "Reboot list: ";
+    else if(showNumber === 1) string = "Configure list: ";
+    else if(showNumber === 2) string = "Call server list: ";
+    else if(showNumber === 3) string = "Hosts file IP-Address group list: ";
+    return string;  
+  }
 
   return (
     <>
@@ -224,7 +237,7 @@ export default function AddIpAddress() {
         </form>
       </div>
 
-      <div style={{ display: "flex", gap: "10px" }}>
+      <div className="tab-buttons">
         <button onClick={() => handleList(0)}>Reboot ip list</button>
         <button onClick={() => handleList(1)}>Configure ip list</button>
         <button onClick={() => handleList(2)}>Call server ip list</button>
@@ -235,7 +248,9 @@ export default function AddIpAddress() {
         className="callServer-list"
         style={{ marginLeft: "240px", marginRight: "40px" }}
       >
+        <h3>{}</h3>
         <div className="form-group902232">
+          <h3>{HeaderName()}</h3>
           <table className="styled-table2232">
             <thead>
               <tr>

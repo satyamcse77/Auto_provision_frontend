@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.378c091c.css",
-    "main.js": "/static/js/main.b8dc3357.js",
+    "main.css": "/static/css/main.2caf0b36.css",
+    "main.js": "/static/js/main.fbe215eb.js",
     "static/js/453.7573a241.chunk.js": "/static/js/453.7573a241.chunk.js",
     "static/media/logoDark.png": "/static/media/logoDark.4df83a7791c3f06db911.png",
     "static/media/cisco.png": "/static/media/cisco.a2f25f5edd6a44b004bf.png",
     "static/media/ip2lg.png": "/static/media/ip2lg.ddc99d43422434269a60.png",
     "static/media/core.png": "/static/media/core.cf03b260d699613d6dbb.png",
     "index.html": "/index.html",
-    "main.378c091c.css.map": "/static/css/main.378c091c.css.map",
-    "main.b8dc3357.js.map": "/static/js/main.b8dc3357.js.map",
+    "main.2caf0b36.css.map": "/static/css/main.2caf0b36.css.map",
+    "main.fbe215eb.js.map": "/static/js/main.fbe215eb.js.map",
     "453.7573a241.chunk.js.map": "/static/js/453.7573a241.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.378c091c.css",
-    "static/js/main.b8dc3357.js"
+    "static/css/main.2caf0b36.css",
+    "static/js/main.fbe215eb.js"
   ]
 }

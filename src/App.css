@@ -626,6 +626,37 @@ input[type="file"] {
   }
 }
 
+/* call server */
+.tab-buttons {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #ddd;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  margin-left: 240px;
+  width: 1000px;
+}
+
+.tab-buttons button {
+  padding: 10px 20px;
+  background-color: #272424;
+  border: none;
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.tab-buttons button:hover {
+  background-color: #ddd;
+}
+
+.tab-buttons button.active {
+  background-color: #fff;
+  border-bottom: 2px solid #fff;
+  font-weight: bold;
+}
+
+/*   --- end --- */
 
 .SipServerForm {
   margin-left: 240px;
