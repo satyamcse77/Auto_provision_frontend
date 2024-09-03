@@ -1106,3 +1106,369 @@ h3 {
 .incomplete {
   color: gray; /* Style for incomplete labels */
 }
+
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  background: #ddd;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  /* animation: moveProgress 10s linear; */
+}
+
+
+ 
+.steps-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+} 
+
+.step {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.line {
+  height: 2px;
+  width: 20px;
+  background: #ddd;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-40%);
+  animation: fadeIn .2s ease-out forwards;
+  animation-delay: 1s;
+}
+
+.icon {
+  margin-right: 8px;
+  font-size: 20px;
+}
+
+.step-label {
+  font-size: 16px;
+}
+
+.icon-completed {
+  color: green;
+}
+
+.icon-incomplete {
+  color: rgb(250, 25, 25);
+}
+
+.completed {
+  font-weight: bold;
+  color: Green;
+}
+
+.incomplete {
+  color: red;
+}
+
+.step {
+  opacity: 0;
+  animation: fadeIn .5s ease-out forwards;
+}
+
+.step-1 {
+  animation-delay: 0s;
+}
+
+.step-2 {
+  animation-delay: 5s;
+}
+
+.step-3 {
+  animation-delay: 8s;
+}
+
+.step-4 {
+  animation-delay: 11s;
+}
+
+
+
+.progressbar-arrow {
+  margin: 0 15px; 
+}
+
+.arrow-icon {
+  font-size: 24px;
+  opacity: 1;
+}
+
+.arrow-icon.animate {
+  animation: arrow-anim 1s ease-in-out infinite;
+  opacity: 1;
+}
+
+
+
+.main-loader {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #f0f0f0;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite, fadeOut 1s linear 2s forwards;
+}
+
+
+.progressbar-label-container.visible {
+  opacity: 1;
+  z-index: 1; /* Ensure visibility over other elements */
+}
+
+.final-icon {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+
+.progress-bar {
+  position: relative;
+} 
+.steps-container {
+  display: flex;
+  align-items: center;
+}
+.step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.step-label {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.step-card img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+.fa-circle {
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+.completed .fa-circle i {
+  color: green;
+}
+
+.incomplete .fa-circle i {
+  color: red;
+}
+.line {
+  width: 2px;
+  height: 20px;
+  background: #ccc;
+  margin: 0 auto;
+  position: relative;
+}
+
+@keyframes final-icon-anim {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes fadeInStage {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.final-icon {
+  opacity: 0; 
+  font-size: 100px;
+  margin-top: 10px;
+  animation: fadeIn 1s linear forwards; 
+  animation-delay: 19s; 
+}
+.progress-popup {
+  position: relative;
+  margin-left: 200px;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 400px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  z-index: 1000;
+  overflow: hidden;
+  padding: 20px;
+  opacity: 0;
+}
+
+.progress-popup.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.progress-content {
+  display: flex;
+  margin-top: 70px;
+  flex-direction: column;
+  padding-top: 40px;
+
+}
+
+
+.steps-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  text-align: center;
+}
+
+.step-label {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.step-card img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+.fa-circle {
+  margin-top: 10px;
+  font-size: 20px;
+  opacity: 0;
+}
+
+.completed {
+  font-weight: bold;
+  color: green;
+}
+
+.incomplete {
+  color: red;
+}
+
+.step:nth-child(1) .fa-circle {
+  animation: fadeIn 1s ease-out forwards;
+  animation-delay: 3s; /* Adjust delay as needed */
+}
+
+.step:nth-child(2) .fa-circle {
+  animation: fadeIn 1s ease-out forwards;
+  animation-delay: 8s; /* Adjust delay as needed */
+}
+.step:nth-child(3) .fa-circle {
+  animation: fadeIn 1s ease-out forwards;
+  animation-delay: 13s; /* Adjust delay as needed */
+}
+.step:nth-child(4) .fa-circle {
+  animation: fadeIn 1s ease-out forwards;
+  animation-delay: 18s; /* Adjust delay as needed */
+}
+
+.step {
+  opacity: 0; /* Start as invisible */
+  animation: fadeInStage 1s ease-out forwards;
+}
+
+.step:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.step:nth-child(2) {
+  animation-delay: 5s; /* Delay each step */
+}
+
+.step:nth-child(3) {
+  animation-delay: 10s;
+}
+
+.step:nth-child(4) {
+  animation-delay: 15s;
+}
