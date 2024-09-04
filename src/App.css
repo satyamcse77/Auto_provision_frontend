@@ -1352,9 +1352,9 @@ h3 {
 }
 .progress-popup {
   position: relative;
-  margin-left: 200px;
+  margin-left: 230px;
   transform: translate(-50%, -50%);
-  width: 100%;
+  width: 750px;
   height: 400px;
   border-radius: 10px;
   display: flex;
@@ -1365,6 +1365,7 @@ h3 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
   z-index: 1000;
+  margin-bottom: 50px;
   overflow: hidden;
   padding: 20px;
   opacity: 0;
