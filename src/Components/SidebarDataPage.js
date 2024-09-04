@@ -59,13 +59,13 @@ const SidebarDataPage = () => {
       section: 'Device Management'
     },
     {
-      title: 'IP phone',
+      title: <span style={{ fontSize: '14px' }}>Provision IP phone</span>,
       icon: <AiIcons.AiFillPhone style={iconColor} />,
       iconClosed: <RiIcons.RiArrowDownSFill style={iconColor} />,
       iconOpened: <RiIcons.RiArrowUpSFill style={iconColor} />,
       subNav: [
         {
-          title: 'Coral IP2LG',
+          title: 'Coral IP Phones',
           path: '/Ip-Phone-Provisioning',
           icon: <IoIcons.IoIosPaper style={iconColor} />
         },

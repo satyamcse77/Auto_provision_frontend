@@ -261,7 +261,7 @@ const IpPhoneProvisioning = () => {
               style={{ marginBottom: "50px" }}
               onSubmit={handleSubmit}
             >
-              <h3>IP2LG</h3>
+              <h3>IP Phone</h3>
               <div className="Form-ip-provisioning">
                 <input
                   type="text"

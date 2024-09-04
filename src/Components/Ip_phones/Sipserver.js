@@ -1,33 +1,32 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 import IP2LG from "../Image/ip2lg.png";
+import IP2LP from "../Image/ip2lp.png";
+import IP4LP from "../Image/ip4lp.png";
+import IP6LP from "../Image/ip6lp.png";
+import AVP6LP from "../Image/avp6lp.png";
+import Dropdown from "react-bootstrap/Dropdown";
 
 export default function SipServer() {
-
   const BaseUrlSpring = process.env.REACT_APP_API_SPRING_URL || "localhost";
   const PORTSpring = process.env.REACT_APP_API_SPRING_PORT || "9090";
   const CookieName = process.env.REACT_APP_COOKIENAME || "session";
   const Token = Cookies.get(CookieName);
   const [sipServer, setSipServer] = useState("");
+  const [phoneSelect, setPhoneSelect] = useState("IP2LG");
+  const [account, setAccount] = useState(1);
+  const [totalNo, setTotalNo] = useState(2);
+  const accountOptions = Array.from({ length: totalNo }, (_, i) => i + 1);
   const [macAddress, setMacAddress] = useState("");
 
   // Account 1 states
-  const [account1_Label, setAccount1_Label] = useState("");
-  const [account1_SipUserId, setAccount1_SipUserId] = useState("");
-  const [account1_AuthenticateID, setAccount1_AuthenticateID] =
+  const [account_Label, setAccount_Label] = useState("");
+  const [account_SipUserId, setAccount_SipUserId] = useState("");
+  const [account_AuthenticateID, setAccount_AuthenticateID] =
     useState("1234");
-  const [account1_DispalyName, setAccount1_DispalyName] = useState("");
-  const [account1_Active, setAccount1_Active] = useState(false);
-  const [account1_LocalSipPort, setAccount1_LocalSipPort] = useState("");
-
-  // Account 2 states
-  const [account2_Label, setAccount2_Label] = useState("");
-  const [account2_SipUserId, setAccount2_SipUserId] = useState("");
-  const [account2_AuthenticateID, setAccount2_AuthenticateID] =
-    useState("1234");
-  const [account2_DispalyName, setAccount2_DispalyName] = useState("");
-  const [account2_Active, setAccount2_Active] = useState(false);
-  const [account2_LocalSipPort, setAccount2_LocalSipPort] = useState("");
+  const [account_DispalyName, setAccount_DispalyName] = useState("");
+  const [account_Active, setAccount_Active] = useState(false);
+  const [account_LocalSipPort, setAccount_LocalSipPort] = useState("");
 
   const handleCheckboxChange = (e, setActive) => {
     setActive(e.target.checked);
@@ -40,24 +39,17 @@ export default function SipServer() {
       const postData = {
         sipServer: sipServer,
         macAddress: macAddress,
-        account1: {
-          Label: account1_Label,
-          SipUserId: account1_SipUserId,
-          AuthenticateID: account1_AuthenticateID,
-          DispalyName: account1_DispalyName,
-          Active: account1_Active,
-          LocalSipPort: account1_LocalSipPort,
-        },
-        account2: {
-          Label: account2_Label,
-          SipUserId: account2_SipUserId,
-          AuthenticateID: account2_AuthenticateID,
-          DispalyName: account2_DispalyName,
-          Active: account2_Active,
-          LocalSipPort: account2_LocalSipPort,
-        },
+        accountNo: account,
+        phoneSelect: phoneSelect,
+        account: {
+          Label: account_Label,
+          SipUserId: account_SipUserId,
+          AuthenticateID: account_AuthenticateID,
+          DispalyName: account_DispalyName,
+          Active: account_Active,
+          LocalSipPort: account_LocalSipPort,
+        }
       };
-   
       const response = await fetch(
         `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManager/sip/${macAddress}`,
         {
@@ -69,7 +61,6 @@ export default function SipServer() {
           body: JSON.stringify(postData),
         }
       );
-
       if (response.ok) {
         alert(`Account creation successful.`);
       } else {
@@ -84,12 +75,68 @@ export default function SipServer() {
   return (
     <>
       <div>
-        <form className="SipServerForm" style={{marginBottom: "50px"}} onSubmit={CallSubmit}>
+        <form
+          className="SipServerForm"
+          style={{ marginBottom: "50px" }}
+          onSubmit={CallSubmit}
+        >
+          <div className="DropDown">
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                {phoneSelect}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() => {setPhoneSelect("IP2LG"); setTotalNo(2);}}
+                >
+                  IP2LG
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {setPhoneSelect("IP2LP"); setTotalNo(2);}}
+                >
+                  IP2LP
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {setPhoneSelect("IP4LP"); setTotalNo(4);}}
+                >
+                  IP4LP
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {setPhoneSelect("IP6LP"); setTotalNo(16);}}
+                >
+                  IP6LP
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    setPhoneSelect("AVP6LP");
+                    setTotalNo(16);
+                  }}
+                >
+                  AVP6LP
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
           <div style={{ display: "flex" }}>
             <div className="form-group90">
               <img
-                style={{marginLeft:"90px", height: "250px", width: "220px" }}
-                src={IP2LG}
+                style={{
+                  marginLeft: "90px",
+                  height: "250px",
+                  width: "220px",
+                }}
+                src={
+                  phoneSelect === "IP2LG"
+                    ? IP2LG
+                    : phoneSelect === "IP4LP"
+                    ? IP4LP
+                    : phoneSelect === "IP6LP"
+                    ? IP6LP
+                    : phoneSelect === "AVP6LP"
+                    ? AVP6LP
+                    : IP2LP
+                }
                 alt="Loading..."
               />
             </div>
@@ -120,164 +167,100 @@ export default function SipServer() {
               </div>
             </div>
           </div>
+          <div className="DropDown2">
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Account: {account}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                {accountOptions.map((acc) => (
+                  <Dropdown.Item key={acc} onClick={() => setAccount(acc)}>
+                    {acc}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+
           <div className="form-accounts-container">
-            {/* Account 1 Partition */}
+            {/* Account Partition */}
+
             <div className="form-partition">
-              <h3>Account 1</h3>
+              <h3>Account {account}</h3>
 
               <div className="form-group90">
-                <label htmlFor="account1_LocalSipPort">
-                  Account 1 local SIP port:
+                <label htmlFor="account_LocalSipPort">
+                  Account {account} local SIP port:
                 </label>
                 <input
                   type="number"
-                  id="account1_LocalSipPort"
-                  value={account1_LocalSipPort}
-                  onChange={(e) => setAccount1_LocalSipPort(e.target.value)}
-                  placeholder="Enter account 1 local SIP port."
+                  id="account_LocalSipPort"
+                  value={account_LocalSipPort}
+                  onChange={(e) => setAccount_LocalSipPort(e.target.value)}
+                  placeholder="Enter account local SIP port."
                   required
                 />
               </div>
 
               <div className="form-group90">
-                <label htmlFor="account1_Active">Account 1 active :</label>
+                <label htmlFor="account_Active">Account {account} active :</label>
                 <input
                   type="checkbox"
-                  id="account1_Active"
-                  name="account1_Active"
+                  id="account_Active"
+                  name="account_Active"
                   className="input-field"
-                  checked={account1_Active}
-                  onChange={(e) => handleCheckboxChange(e, setAccount1_Active)}
+                  checked={account_Active}
+                  onChange={(e) => handleCheckboxChange(e, setAccount_Active)}
                 />
               </div>
 
               <div className="form-group90">
-                <label htmlFor="account1_DispalyName">
-                  Account 1 dispalyName :
+                <label htmlFor="account_DispalyName">
+                  Account {account} dispalyName :
                 </label>
                 <input
                   type="text"
-                  id="account1_DispalyName"
-                  value={account1_DispalyName}
-                  onChange={(e) => setAccount1_DispalyName(e.target.value)}
+                  id="account_DispalyName"
+                  value={account_DispalyName}
+                  onChange={(e) => setAccount_DispalyName(e.target.value)}
                   required
                 />
               </div>
 
               <div className="form-group90">
-                <label htmlFor="account1_Label">Account 1 label :</label>
+                <label htmlFor="account_Label">Account {account} label :</label>
                 <input
                   type="text"
-                  id="account1_Label"
-                  value={account1_Label}
-                  onChange={(e) => setAccount1_Label(e.target.value)}
+                  id="account_Label"
+                  value={account_Label}
+                  onChange={(e) => setAccount_Label(e.target.value)}
                   required
                 />
               </div>
 
               <div className="form-group90">
-                <label htmlFor="account1_SipUserId">
-                  Account 1 SIP userId :
+                <label htmlFor="account_SipUserId">
+                  Account {account} SIP userId :
                 </label>
                 <input
                   type="text"
-                  id="account1_SipUserId"
-                  value={account1_SipUserId}
-                  onChange={(e) => setAccount1_SipUserId(e.target.value)}
+                  id="account_SipUserId"
+                  value={account_SipUserId}
+                  onChange={(e) => setAccount_SipUserId(e.target.value)}
                   required
                 />
               </div>
 
               <div className="form-group90">
-                <label htmlFor="account1_AuthenticateID">
-                  Account 1 authenticateID :
+                <label htmlFor="account_AuthenticateID">
+                  Account {account} authenticateID :
                 </label>
                 <input
                   type="text"
-                  id="account1_AuthenticateID"
-                  value={account1_AuthenticateID}
-                  onChange={(e) => setAccount1_AuthenticateID(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Account 2 Partition */}
-            <div className="form-partition">
-              <h3>Account 2</h3>
-
-              <div className="form-group90">
-                <label htmlFor="account2_LocalSipPort">
-                  Account 2 local SIP port:
-                </label>
-                <input
-                  type="number"
-                  id="account2_LocalSipPort"
-                  value={account2_LocalSipPort}
-                  onChange={(e) => setAccount2_LocalSipPort(e.target.value)}
-                  placeholder="Enter account 2 local SIP port."
-                  required
-                />
-              </div>
-
-              <div className="form-group90">
-                <label htmlFor="account2_Active">Account 2 active :</label>
-                <input
-                  type="checkbox"
-                  id="account2_Active"
-                  name="account2_Active"
-                  className="input-field"
-                  checked={account2_Active}
-                  onChange={(e) => handleCheckboxChange(e, setAccount2_Active)}
-                />
-              </div>
-
-              <div className="form-group90">
-                <label htmlFor="account2_DispalyName">
-                  Account 2 dispalyName :
-                </label>
-                <input
-                  type="text"
-                  id="account2_DispalyName"
-                  value={account2_DispalyName}
-                  onChange={(e) => setAccount2_DispalyName(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="form-group90">
-                <label htmlFor="account2_Label">Account 2 label :</label>
-                <input
-                  type="text"
-                  id="account2_Label"
-                  value={account2_Label}
-                  onChange={(e) => setAccount2_Label(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="form-group90">
-                <label htmlFor="account2_SipUserId">
-                  Account 2 SIP userId :
-                </label>
-                <input
-                  type="text"
-                  id="account2_SipUserId"
-                  value={account2_SipUserId}
-                  onChange={(e) => setAccount2_SipUserId(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="form-group90">
-                <label htmlFor="account2_AuthenticateID">
-                  Account 2 authenticateID :
-                </label>
-                <input
-                  type="text"
-                  id="account2_AuthenticateID"
-                  value={account2_AuthenticateID}
-                  onChange={(e) => setAccount2_AuthenticateID(e.target.value)}
+                  id="account_AuthenticateID"
+                  value={account_AuthenticateID}
+                  onChange={(e) => setAccount_AuthenticateID(e.target.value)}
                   required
                 />
               </div>
@@ -286,7 +269,7 @@ export default function SipServer() {
 
           <div className="form-group90">
             <button type="submit" className="button21">
-              Submit
+              Provision account {account}
             </button>
           </div>
         </form>

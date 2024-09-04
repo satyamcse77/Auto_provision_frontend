@@ -128,8 +128,6 @@ const Cisco_phone = () => {
     }
   }, [dhcp, tftp, path, defaultFile]);
 
-  const percentage = 4 ? (currentStep / (4 - 1)) * 100 : 0;
-
   const conditions = {
     0: dhcp ? "Dhcp on" : "Dhcp off",
     1: tftp ? "Tftp on" : "Tftp off",
