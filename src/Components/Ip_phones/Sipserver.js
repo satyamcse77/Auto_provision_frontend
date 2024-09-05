@@ -14,7 +14,7 @@ export default function SipServer() {
   const Token = Cookies.get(CookieName);
   const [sipServer, setSipServer] = useState("");
   const [phoneSelect, setPhoneSelect] = useState("IP2LG");
-  const [account, setAccount] = useState(1);
+  const [account, setAccount] = useState("1");
   const [totalNo, setTotalNo] = useState(2);
   const accountOptions = Array.from({ length: totalNo }, (_, i) => i + 1);
   const [macAddress, setMacAddress] = useState("");
@@ -175,7 +175,7 @@ export default function SipServer() {
 
               <Dropdown.Menu>
                 {accountOptions.map((acc) => (
-                  <Dropdown.Item key={acc} onClick={() => setAccount(acc)}>
+                  <Dropdown.Item key={acc} onClick={() =>  setAccount(String(acc))}>
                     {acc}
                   </Dropdown.Item>
                 ))}

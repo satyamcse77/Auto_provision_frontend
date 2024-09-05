@@ -22,7 +22,6 @@ const IpPhoneProvisioning = () => {
   const Token = Cookies.get(CookieName);
 
   useEffect(() => {
-
     if (!Token) navigate("/log-in");
     const fetchData = async () => {
       try {
@@ -48,28 +47,32 @@ const IpPhoneProvisioning = () => {
   }, [navigate, PORTTr069, BaseUrlTr069, Token]);
 
   const RebootCall = async () => {
-    setAddMacAddress.push({MacAddress: MacAddress})
-    if (MacAddress === "") {
-      alert("MacAddress is required.");
+    if (MacAddress !== "") {
+      AddMacAddress.push({ MacAddress: MacAddress }); 
+    }
+    if (AddMacAddress.length === 0) { 
+      alert("At least one MAC address is required.");
       return;
     }
+    const FormatedDataAddMacAddress = await AddMacAddress.map((item) => item.MacAddress);
     try {
       const TokenData = JSON.parse(Token);
       let result = await fetch(
-        `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManager/reboot/${MacAddress}`,
+        `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManager/rebootBulk`,
         {
-          method: "get",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + TokenData.AuthToken,
           },
+          body: JSON.stringify(FormatedDataAddMacAddress)
         }
       );
       result = await result.json();
       if (result.status === 0) {
-        alert("Device rebooted - " + MacAddress);
+        alert("Devices rebooted successfully.");
       } else {
-        alert("MacAddress wrong or invalid token.");
+        alert("Failed to reboot devices.");
       }
     } catch (error) {
       alert("Server error, please try again.");
@@ -78,28 +81,33 @@ const IpPhoneProvisioning = () => {
   };
 
   const ResetCall = async () => {
-    if (MacAddress === "") {
-      alert("MacAddress is required.");
+    if (MacAddress !== "") {
+      AddMacAddress.push({ MacAddress: MacAddress }); 
+    }
+    if (AddMacAddress.length === 0) {
+      alert("At least one MAC address is required.");
       return;
     }
+    const FormatedDataAddMacAddress = await AddMacAddress.map((item) => item.MacAddress);
+    console.log(FormatedDataAddMacAddress);
     try {
       const TokenData = JSON.parse(Token);
       let result = await fetch(
-        `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManager/reset/${MacAddress}`,
+        `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManager/resetBulk`, 
         {
-          method: "get",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + TokenData.AuthToken,
           },
+          body: JSON.stringify(FormatedDataAddMacAddress),
         }
       );
       result = await result.json();
-      console.log(result);
       if (result.status === 0) {
-        alert("Device reset - " + MacAddress);
+        alert("Devices reset successfully.");
       } else {
-        alert("MacAddress wrong or invalid token.");
+        alert("Failed to reset devices.");
       }
     } catch (error) {
       alert("Server error, please try again.");
@@ -303,7 +311,7 @@ const IpPhoneProvisioning = () => {
           {AddMacAddress.map((item, index) => (
             <div className="addMacForm" key={index}>
               <label htmlFor={`MacAddress-${index}`}>
-                Enter Mac Address {index + 1}
+                Enter Mac Address {index + 2}
               </label>
               <div className="addMacAddress">
                 <input
@@ -332,6 +340,9 @@ const IpPhoneProvisioning = () => {
 
               <hr className="config-hr" />
               <div className="config-section">
+              <p style={{color: "red"}}>
+  Note: vendor configuration file and Firmware Upgrade currently can not support bulk provision it will take only 1st macAddress
+</p>
                 <h5>Vendor Configuration File</h5>
                 <br />
                   <Form.Group controlId="formFileDisabled" className="mb-3">

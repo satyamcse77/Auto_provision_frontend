@@ -4,7 +4,8 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import Header from "./cards/header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faCircle } from "@fortawesome/free-solid-svg-icons";
+import { MdOnlinePrediction } from "react-icons/md";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function Fault() {
   
@@ -136,8 +137,8 @@ export default function Fault() {
                     {item.ping ?`${item.ping} ms`:""}
                   </td>
                   <td>
-                    <FontAwesomeIcon
-                      icon={faCircle}
+                    <MdOnlinePrediction
+                      icon={MdOnlinePrediction}
                       style={{
                         cursor: "pointer",
                         color: item.ping && item.ipAddress ? "green" : "red",
