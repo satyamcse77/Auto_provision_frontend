@@ -9,7 +9,8 @@ import Tabs from '../cards/Tabs'
 
 
 const IpPhoneProvisioning = () => {
-  
+  const [activeTab, setActiveTab] = useState("Account Settings"); 
+  const [AddMacAddress, setAddMacAddress] = useState([]);
   const [MacAddress, setMacAddress] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ const IpPhoneProvisioning = () => {
   }, [navigate, PORTTr069, BaseUrlTr069, Token]);
 
   const RebootCall = async () => {
+    setAddMacAddress.push({MacAddress: MacAddress})
     if (MacAddress === "") {
       alert("MacAddress is required.");
       return;
@@ -243,7 +245,20 @@ const IpPhoneProvisioning = () => {
     }
   };
 
-  const [activeTab, setActiveTab] = useState("Account Settings"); 
+  const addIpAddress = () => {
+    setAddMacAddress([...AddMacAddress, { MacAddress: "" }]);
+  };
+  
+  const handleInputChange = (index, value) => {
+    const newAddMacAddress = [...AddMacAddress];
+    newAddMacAddress[index] = { MacAddress: value };
+    setAddMacAddress(newAddMacAddress);
+  };
+
+  const removeAddMacAddress = (index) => {
+    const newAddMacAddress = AddMacAddress.filter((_, i) => i !== index);
+     setAddMacAddress(newAddMacAddress);
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -255,7 +270,7 @@ const IpPhoneProvisioning = () => {
         );
       case "Provisioning":
         return (
-          <div className="">
+          <div className="ip-phone-container">
             <form
               className="ip-phone-form"
               style={{ marginBottom: "50px" }}
@@ -280,8 +295,40 @@ const IpPhoneProvisioning = () => {
                   <button type="button" onClick={ResetCall} className="button">
                     Reset
                   </button>
+                  <button type="button" style={{fontSize:"11px"}} className="button" onClick={addIpAddress}>
+            Add Mac Address + 
+          </button>
                 </div>
               </div>
+          {AddMacAddress.map((item, index) => (
+            <div className="addMacForm" key={index}>
+              <label htmlFor={`MacAddress-${index}`}>
+                Enter Mac Address {index + 1}
+              </label>
+              <div className="addMacAddress">
+                <input
+                  type="text"
+                  id={`MacAddress-${index}`}
+                  value={item.ipAddress}
+                  onChange={(e) =>
+                    handleInputChange(index, e.target.value)
+                  }
+                  placeholder="Enter Mac address"
+                  required
+                />
+                {index > -1 && (
+                  <button
+                    type="button"
+                    
+                    onClick={() => removeAddMacAddress(index)}
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
 
               <hr className="config-hr" />
               <div className="config-section">

@@ -31,6 +31,7 @@ button {
   cursor: pointer;
   transition: all 0.5s;
   font-weight: 500;
+  height: 100%;
   position: relative;
   z-index: 1;
 }
@@ -231,15 +232,26 @@ button:hover {
   margin-top: 20px;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   border-radius: 10px;
   background-color:#ccc;
   padding: 20px;
   box-shadow: 10px 10px 5px 5px rgba(92, 92, 92, 0.3);
   width: auto;
   animation: slideIn 0.5s ease-out;
+  max-width: 800px;
+}
+.addMacForm{
+  margin-top: 20px;
+}
+.addMacAddress{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
 }
 .ip-phone-form button {
-  width: 100%;
+  width: auto;
   padding: 10px;
   font-size: 16px;
   color: #fff;
@@ -528,6 +540,7 @@ input[type="file"]{
   border: 1px solid #4e4e4e;
   border-radius: 4px;
   width: 100%;
+  height: 100%;
   box-sizing: border-box;
   background-color: #555555;
   color: #ffffff;
@@ -743,10 +756,13 @@ input[type="file"] {
   background-color: #f9f9f9;
 }
 .button21{
+  margin-top: 20px;
   align-items: center;
+  width: auto;
   justify-content: center;
   
 }
+
 
 .system-setting-status {
   background-color: #ffffff; 
@@ -774,12 +790,6 @@ input[type="file"] {
   margin-bottom: 0;
 }
 
-
-
-.button2121{
-  align-items: center;
-  justify-content: center;
-}
 
 .SipServerContainer {
   display: flex;
