@@ -10,6 +10,7 @@ import { IoSettings, IoLogOutOutline } from 'react-icons/io5';
 import { BsTelephoneFill } from 'react-icons/bs';
 import { LiaHistorySolid } from 'react-icons/lia';
 import { AiOutlineOrderedList } from 'react-icons/ai';
+import { SiServerfault } from "react-icons/si";
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
@@ -138,6 +139,11 @@ const SidebarDataPage = () => {
       title: 'System Settings',
       path: '/system-setting',
       icon: <IoSettings style={iconColor} />
+    },
+    {
+      title: 'Fault',
+      path: '/faults',
+      icon: <SiServerfault style={iconColor} />
     },
     {
       title: 'History',

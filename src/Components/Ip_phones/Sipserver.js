@@ -18,14 +18,12 @@ export default function SipServer() {
   const [totalNo, setTotalNo] = useState(2);
   const accountOptions = Array.from({ length: totalNo }, (_, i) => i + 1);
   const [macAddress, setMacAddress] = useState("");
-
-  // Account 1 states
   const [account_Label, setAccount_Label] = useState("");
   const [account_SipUserId, setAccount_SipUserId] = useState("");
-  const [account_AuthenticateID, setAccount_AuthenticateID] =
-    useState("1234");
+  const [account_AuthenticateID, setAccount_AuthenticateID] = useState("1234");
   const [account_DispalyName, setAccount_DispalyName] = useState("");
   const [account_Active, setAccount_Active] = useState(false);
+  const [showOneByOne, setShowOneByOne] = useState(false);
   const [account_LocalSipPort, setAccount_LocalSipPort] = useState("");
 
   const handleCheckboxChange = (e, setActive) => {
@@ -36,10 +34,18 @@ export default function SipServer() {
     event.preventDefault();
     try {
       const TokenData = await JSON.parse(Token);
+      if (!showOneByOne) {
+        let result = await account_SipUserId.split(",").filter(Boolean);
+        result = result.length;
+        if (totalNo < result) {
+          alert("Give correct multiple account number. like: 2322, 4554");
+          return;
+        }
+      }
       const postData = {
         sipServer: sipServer,
         macAddress: macAddress,
-        accountNo: account,
+        accountNo: showOneByOne ? account : "-1",
         phoneSelect: phoneSelect,
         account: {
           Label: account_Label,
@@ -48,7 +54,7 @@ export default function SipServer() {
           DispalyName: account_DispalyName,
           Active: account_Active,
           LocalSipPort: account_LocalSipPort,
-        }
+        },
       };
       const response = await fetch(
         `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManager/sip/${macAddress}`,
@@ -88,22 +94,34 @@ export default function SipServer() {
 
               <Dropdown.Menu>
                 <Dropdown.Item
-                  onClick={() => {setPhoneSelect("IP2LG"); setTotalNo(2);}}
+                  onClick={() => {
+                    setPhoneSelect("IP2LG");
+                    setTotalNo(2);
+                  }}
                 >
                   IP2LG
                 </Dropdown.Item>
                 <Dropdown.Item
-                  onClick={() => {setPhoneSelect("IP2LP"); setTotalNo(2);}}
+                  onClick={() => {
+                    setPhoneSelect("IP2LP");
+                    setTotalNo(2);
+                  }}
                 >
                   IP2LP
                 </Dropdown.Item>
                 <Dropdown.Item
-                  onClick={() => {setPhoneSelect("IP4LP"); setTotalNo(4);}}
+                  onClick={() => {
+                    setPhoneSelect("IP4LP");
+                    setTotalNo(4);
+                  }}
                 >
                   IP4LP
                 </Dropdown.Item>
                 <Dropdown.Item
-                  onClick={() => {setPhoneSelect("IP6LP"); setTotalNo(16);}}
+                  onClick={() => {
+                    setPhoneSelect("IP6LP");
+                    setTotalNo(16);
+                  }}
                 >
                   IP6LP
                 </Dropdown.Item>
@@ -166,111 +184,222 @@ export default function SipServer() {
                 />
               </div>
             </div>
-          </div>
-          <div className="DropDown2">
-            <Dropdown>
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Account: {account}
-              </Dropdown.Toggle>
+            <div className="form-group90">
+              <button
+                type="button"
+                className="button21"
+                onClick={() => {
+                  setShowOneByOne(true);
+                }}
+              >
+                Provision account one by one
+              </button>
 
-              <Dropdown.Menu>
-                {accountOptions.map((acc) => (
-                  <Dropdown.Item key={acc} onClick={() =>  setAccount(String(acc))}>
-                    {acc}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-
-          <div className="form-accounts-container">
-            {/* Account Partition */}
-
-            <div className="form-partition">
-              <h3>Account {account}</h3>
-
-              <div className="form-group90">
-                <label htmlFor="account_LocalSipPort">
-                  Account {account} local SIP port:
-                </label>
-                <input
-                  type="number"
-                  id="account_LocalSipPort"
-                  value={account_LocalSipPort}
-                  onChange={(e) => setAccount_LocalSipPort(e.target.value)}
-                  placeholder="Enter account local SIP port."
-                  required
-                />
-              </div>
-
-              <div className="form-group90">
-                <label htmlFor="account_Active">Account {account} active :</label>
-                <input
-                  type="checkbox"
-                  id="account_Active"
-                  name="account_Active"
-                  className="input-field"
-                  checked={account_Active}
-                  onChange={(e) => handleCheckboxChange(e, setAccount_Active)}
-                />
-              </div>
-
-              <div className="form-group90">
-                <label htmlFor="account_DispalyName">
-                  Account {account} dispalyName :
-                </label>
-                <input
-                  type="text"
-                  id="account_DispalyName"
-                  value={account_DispalyName}
-                  onChange={(e) => setAccount_DispalyName(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="form-group90">
-                <label htmlFor="account_Label">Account {account} label :</label>
-                <input
-                  type="text"
-                  id="account_Label"
-                  value={account_Label}
-                  onChange={(e) => setAccount_Label(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="form-group90">
-                <label htmlFor="account_SipUserId">
-                  Account {account} SIP userId :
-                </label>
-                <input
-                  type="text"
-                  id="account_SipUserId"
-                  value={account_SipUserId}
-                  onChange={(e) => setAccount_SipUserId(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="form-group90">
-                <label htmlFor="account_AuthenticateID">
-                  Account {account} authenticateID :
-                </label>
-                <input
-                  type="text"
-                  id="account_AuthenticateID"
-                  value={account_AuthenticateID}
-                  onChange={(e) => setAccount_AuthenticateID(e.target.value)}
-                  required
-                />
-              </div>
+              <button
+                type="button"
+                className="button21"
+                onClick={() => setShowOneByOne(false)}
+              >
+                Provision account bulk
+              </button>
             </div>
           </div>
+          {showOneByOne && (
+            <div>
+              <div className="DropDown2">
+                <Dropdown>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    Account: {account}
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    {accountOptions.map((acc) => (
+                      <Dropdown.Item
+                        key={acc}
+                        onClick={() => setAccount(String(acc))}
+                      >
+                        {acc}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
+
+              <div className="form-accounts-container">
+                {/* Account Partition */}
+
+                <div className="form-partition">
+                  <h3>Account {account}</h3>
+
+                  <div className="form-group90">
+                    <label htmlFor="account_LocalSipPort">
+                      Account {account} local SIP port:
+                    </label>
+                    <input
+                      type="number"
+                      id="account_LocalSipPort"
+                      value={account_LocalSipPort}
+                      onChange={(e) => setAccount_LocalSipPort(e.target.value)}
+                      placeholder="Enter account local SIP port."
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group90">
+                    <label htmlFor="account_Active">
+                      Account {account} active :
+                    </label>
+                    <input
+                      type="checkbox"
+                      id="account_Active"
+                      name="account_Active"
+                      className="input-field"
+                      checked={account_Active}
+                      onChange={(e) =>
+                        handleCheckboxChange(e, setAccount_Active)
+                      }
+                    />
+                  </div>
+
+                  <div className="form-group90">
+                    <label htmlFor="account_DispalyName">
+                      Account {account} dispalyName :
+                    </label>
+                    <input
+                      type="text"
+                      id="account_DispalyName"
+                      value={account_DispalyName}
+                      onChange={(e) => setAccount_DispalyName(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group90">
+                    <label htmlFor="account_Label">
+                      Account {account} label :
+                    </label>
+                    <input
+                      type="text"
+                      id="account_Label"
+                      value={account_Label}
+                      onChange={(e) => setAccount_Label(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group90">
+                    <label htmlFor="account_SipUserId">
+                      Account {account} SIP userId :
+                    </label>
+                    <input
+                      type="text"
+                      id="account_SipUserId"
+                      value={account_SipUserId}
+                      onChange={(e) => setAccount_SipUserId(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group90">
+                    <label htmlFor="account_AuthenticateID">
+                      Account {account} authenticateID :
+                    </label>
+                    <input
+                      type="text"
+                      id="account_AuthenticateID"
+                      value={account_AuthenticateID}
+                      onChange={(e) =>
+                        setAccount_AuthenticateID(e.target.value)
+                      }
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {!showOneByOne && (
+            <div>
+              <div className="form-accounts-container">
+                {/* Account Partition */}
+
+                <div className="form-partition">
+                  <h3>Accounts</h3>
+
+                  <div className="form-group90">
+                    <label htmlFor="account_LocalSipPort">
+                      Accounts local SIP port:
+                    </label>
+                    <input
+                      type="number"
+                      id="account_LocalSipPort"
+                      value={account_LocalSipPort}
+                      onChange={(e) => setAccount_LocalSipPort(e.target.value)}
+                      placeholder="Enter account local SIP port."
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group90">
+                    <label htmlFor="account_Active">Accounts active :</label>
+                    <input
+                      type="checkbox"
+                      id="account_Active"
+                      name="account_Active"
+                      className="input-field"
+                      checked={account_Active}
+                      onChange={(e) =>
+                        handleCheckboxChange(e, setAccount_Active)
+                      }
+                    />
+                  </div>
+
+                  <div className="form-group90">
+                    <label htmlFor="account_AuthenticateID">
+                      Accounts authenticateID :
+                    </label>
+                    <input
+                      type="text"
+                      id="account_AuthenticateID"
+                      value={account_AuthenticateID}
+                      onChange={(e) =>
+                        setAccount_AuthenticateID(e.target.value)
+                      }
+                      required
+                    />
+                  </div>
+                  <div className="form-group90">
+                    <label htmlFor="account_SipUserId">
+                      Accounts SIP User ID:
+                      <span style={{ fontSize: "14px", color: "red" }}>
+                        (Comma-separated values are supported for multiple
+                        accounts.)
+                      </span>
+                    </label>
+
+                    <input
+                      type="text"
+                      id="account_SipUserId"
+                      value={account_SipUserId}
+                      onChange={(e) => setAccount_SipUserId(e.target.value)}
+                      required
+                      placeholder="Enter comma-separated values"
+                    />
+                  </div>
+                </div>
+              </div>
+              <button type="submit" className="button21">
+                Provision all account
+              </button>
+            </div>
+          )}
 
           <div className="form-group90">
-            <button type="submit" className="button21">
-              Provision account {account}
-            </button>
+            {showOneByOne && (
+              <button type="submit" className="button21">
+                Provision account {account}
+              </button>
+            )}
           </div>
         </form>
       </div>
