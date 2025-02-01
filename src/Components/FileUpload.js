@@ -9,9 +9,9 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function Fault() {
   const [apiData, setApiData] = useState([]);
-  const BaseUrlSpring = "192.168.250.51" || "localhost";
+  const BaseUrlSpring = window.location.host.split(":")[0] || "localhost";
   const PORTSpring = process.env.REACT_APP_API_SPRING_PORT || "9093";
-  const BaseUrlTr069 = "192.168.250.51" || "localhost";
+  const BaseUrlTr069 = window.location.host.split(":")[0] || "localhost";
   const PORTTr069 = "3000";
   const CookieName = process.env.REACT_APP_COOKIENAME || "auto provision";
   const Token = Cookies.get(CookieName);

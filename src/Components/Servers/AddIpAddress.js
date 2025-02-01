@@ -13,10 +13,10 @@ export default function AddIpAddress() {
   const [ipAddresses, setIpAddresses] = useState([]);
   const [deleteNumber, setDeleteNumber] = useState(-1);
   const [showNumber, setShowNumber] = useState(-1);
-  const BaseUrlTr069 = "192.168.250.51" || "localhost";
+  const BaseUrlTr069 = window.location.host.split(":")[0] || "localhost";
   const PORTTr069 = "3000";
   const CookieName = process.env.REACT_APP_COOKIENAME || "auto provision";
-  const BaseUrlNode = "192.168.250.51" || "localhost";
+  const BaseUrlNode = window.location.host.split(":")[0] || "localhost";
   const PORTNode = process.env.REACT_APP_API_NODE_PORT || "4058";
   const Token = Cookies.get(CookieName);
 

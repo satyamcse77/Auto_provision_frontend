@@ -20,9 +20,9 @@ export default function SystemSetting() {
   const [TftpOn, setTftpOn] = useState(false);
   const navigate = useNavigate();
   const Token = Cookies.get(process.env.REACT_APP_COOKIENAME || "auto provision");
-  const BaseUrlTr069 = "192.168.250.51" || "localhost";
+  const BaseUrlTr069 = window.location.host.split(":")[0] || "localhost";
   const PORTTr069 = "3000";
-  const BaseUrlNode = "192.168.250.51" || "localhost";
+  const BaseUrlNode = window.location.host.split(":")[0] || "localhost";
   const PORTNode = process.env.REACT_APP_API_NODE_PORT || "4058";
   const [isLoading, setIsLoading] = useState(false);
 

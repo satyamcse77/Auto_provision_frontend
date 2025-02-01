@@ -8,7 +8,7 @@ export default function LogIn() {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
-  const BaseUrlTr069 = "192.168.250.51" || "localhost";
+  const BaseUrlTr069 = window.location.host.split(":")[0] || "localhost";
   // const BaseUrlTr069 = "localhost";
   const PORTTr069 = "3000";
 
