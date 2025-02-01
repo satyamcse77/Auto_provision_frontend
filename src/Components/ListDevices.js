@@ -6,28 +6,30 @@ import Header from "./cards/header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MdOnlinePrediction } from "react-icons/md";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function Fault() {
-  
+
   const [apiData, setApiData] = useState([]);
-  const BaseUrlSpring = process.env.REACT_APP_API_SPRING_URL || "localhost";
-  const PORTSpring = process.env.REACT_APP_API_SPRING_PORT || "9090";
-  const BaseUrlTr069 = process.env.REACT_APP_API_tr069_URL || "localhost";
-  const PORTTr069 = process.env.REACT_APP_API_tr069_PORT || "3000";
-  const CookieName = process.env.REACT_APP_COOKIENAME || "session";
+  const [isLoading, setIsLoading] = useState(true);
+  const BaseUrlSpring = "192.168.250.51" || "localhost";
+  const PORTSpring = process.env.REACT_APP_API_SPRING_PORT || "9093";
+  const BaseUrlTr069 = "192.168.250.51" || "localhost";
+  const PORTTr069 = "3000";
+  const CookieName = process.env.REACT_APP_COOKIENAME || "auto provision";
   const Token = Cookies.get(CookieName);
   const navigate = useNavigate();
 
   useEffect(() => {
-    
-    if (!Token) navigate("/log-in");
+    if (!Token) navigate("/");
+  
     const fetchData = async () => {
       try {
         const TokenData = JSON.parse(Token);
         const response = await fetch(
           `http://${BaseUrlTr069}:${PORTTr069}/checkAuth`,
           {
-            method: "post",
+            method: "POST",
             headers: {
               Authorization: "Bearer " + TokenData.AuthToken,
             },
@@ -35,18 +37,19 @@ export default function Fault() {
         );
         const data = await response.json();
         if (data.status !== 1) {
-          navigate("/log-in");
+          navigate("/");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error in authentication:", error);
       }
     };
+  
     fetchData();
-
+  
+    // Function to fetch data at intervals
     const fetchData2 = async () => {
       try {
         const TokenData = JSON.parse(Token);
-        console.log(TokenData.AuthToken);
         const response = await fetch(
           `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManagerInfo/allData`,
           {
@@ -57,28 +60,31 @@ export default function Fault() {
           }
         );
         const data = await response.json();
-        if (data) {
-          await setApiData(data);
+        const sortedData = data.sort((a, b) => a.id - b.id);
+        if (sortedData) {
+          setApiData(sortedData);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
+
+    fetchData2();
+  
     const intervalId = setInterval(() => {
       fetchData2();
-    }, 5000);
+    }, 10000);
+  
     return () => clearInterval(intervalId);
   }, [
-    navigate,
     setApiData,
-    apiData,
     BaseUrlSpring,
     PORTSpring,
-    BaseUrlTr069,
-    PORTTr069,
     Token,
   ]);
-
+  
   const handleDelete = async (macAddress) => {
     const TokenData = JSON.parse(Token);
     try {
@@ -94,9 +100,9 @@ export default function Fault() {
       );
       const data = await response.json();
       if (response.ok && data.status === 0) {
-        alert('Delete request successful');
+        alert("Delete request successful");
       } else {
-        alert('Delete request failed: ' + (data.message || 'No message'));
+        alert("Delete request failed: " + (data.message || "No message"));
       }
     } catch (error) {
       console.error("Error making delete request", error);
@@ -120,7 +126,6 @@ export default function Fault() {
                 <th>OUI</th>
                 <th>Product class</th>
                 <th>IpAddress</th>
-                <th>Ping</th>
                 <th>Status</th>
                 <th>Delete</th>
               </tr>
@@ -128,20 +133,43 @@ export default function Fault() {
             <tbody>
               {apiData.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.id}</td>
-                  <td>{item.macAddress}</td>
+                  <td>{index + 1}</td>
+                  <td>
+                    <span
+                      onClick={() => navigate("/Ip-Phone-Provisioning")}
+                      style={{
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {item.macAddress}
+                    </span>
+                  </td>
                   <td>{item.oui}</td>
                   <td>{item.productClass}</td>
-                  <td>{item.ipAddress?item.ipAddress:"0.0.0.0"}</td>
                   <td>
-                    {item.ping ?`${item.ping} ms`:""}
+                    {item.ipAddress && item.ipAddress !== "-1" ? (
+                      <span
+                        onClick={() => {
+                          window.open(`http://${item.ipAddress}/`, "_blank");
+                        }}
+                        style={{
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        {item.ipAddress}
+                      </span>
+                    ) : (
+                      "-1"
+                    )}
                   </td>
                   <td>
                     <MdOnlinePrediction
                       icon={MdOnlinePrediction}
                       style={{
                         cursor: "pointer",
-                        color: item.ping && item.ipAddress ? "green" : "red",
+                        color: item.active ? "green" : "red",
                         marginLeft: "10px",
                       }}
                     />
@@ -163,6 +191,33 @@ export default function Fault() {
           </table>
         </div>
       </form>
+
+      {isLoading && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div style={{ color: "white", fontSize: "30px", display: "flex", alignItems: "center" }}>
+            <AiOutlineLoading3Quarters
+              style={{
+                animation: "spin 2s linear infinite",
+                marginRight: "10px",
+              }}
+            />
+            Please wait... while we are retrieving the data.
+          </div>
+        </div>
+      )}
     </>
   );
 }

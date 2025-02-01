@@ -14,17 +14,17 @@ const Dashboard = () => {
   const [countHistory, setCountHistory] = useState(0);
   const [systemHealth, setSystemHealth] = useState(null);
   const [onlineDevices, setOnlineDevices] = useState(0);
-  const BaseUrlSpring = process.env.REACT_APP_API_SPRING_URL || "localhost";
-  const PORTSpring = process.env.REACT_APP_API_SPRING_PORT || "9090";
-  const BaseUrlTr069 = process.env.REACT_APP_API_tr069_URL || "localhost";
-  const PORTTr069 = process.env.REACT_APP_API_tr069_PORT || "3000";
-  const BaseUrlNode = process.env.REACT_APP_API_NODE_URL || "localhost";
-  const PORTNode = process.env.REACT_APP_API_NODE_PORT || "3000";
-  const CookieName = process.env.REACT_APP_COOKIENAME || "session";
+  const BaseUrlSpring = "192.168.250.51" || "localhost";
+  const PORTSpring = process.env.REACT_APP_API_SPRING_PORT || "9093";
+  const BaseUrlTr069 = "192.168.250.51" || "localhost";
+  const PORTTr069 = "3000";
+  const BaseUrlNode = "192.168.250.51" || "localhost";
+  const PORTNode = process.env.REACT_APP_API_NODE_PORT || "4058";
+  const CookieName = process.env.REACT_APP_COOKIENAME || "auto provision";
   const Token = Cookies.get(CookieName);
 
   useEffect(() => {
-    if (!Token) navigate("/log-in");
+    if (!Token) navigate("/");
     const TokenData = JSON.parse(Token);
     const fetchData = async () => {
       try {
@@ -39,7 +39,7 @@ const Dashboard = () => {
         );
         const data = await response.json();
         if (data.status !== 1) {
-          navigate("/log-in");
+          navigate("/");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -62,7 +62,7 @@ const Dashboard = () => {
         if (response) {
           let count = 0;
           response.forEach((item) => {
-            if (item.ping && item.ipAddress) {
+            if (item.active) {
               count++;
             }
           });
@@ -129,25 +129,17 @@ const Dashboard = () => {
         console.error("Error fetching data:", error);
       }
     };
+
+    fetchData2();
+    fetchData4();
+    fetchData3();
+
     const intervalId = setInterval(() => {
-      fetchData2();
-      fetchData4();
       fetchData5();
-      fetchData3();
-    }, 5000);
+    }, 10000);
+
     return () => clearInterval(intervalId);
-  }, [
-    navigate,
-    setOnlineDevices,
-    BaseUrlSpring,
-    PORTSpring,
-    BaseUrlNode,
-    PORTNode,
-    BaseUrlTr069,
-    PORTTr069,
-    Token,
-    systemHealth,
-  ]);
+  }, [BaseUrlNode,PORTNode]);
 
   return (
     <>

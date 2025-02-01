@@ -1,9 +1,7 @@
-// DashboardCard.js
 import React from 'react';
 import styled from 'styled-components';
 import Card from 'react-bootstrap/Card';
 
-// Styled components
 const StyledCard = styled(Card)`
   border-color: ${({ color }) => color};
   display: flex;

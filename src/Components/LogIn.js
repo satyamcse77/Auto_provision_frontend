@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "./Image/logoDark.png"
+const CookieName = process.env.REACT_APP_COOKIENAME || "auto provision";
 
 export default function LogIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
-  const BaseUrlTr069 = process.env.REACT_APP_API_tr069_URL || "localhost";
-  const PORTTr069 = process.env.REACT_APP_API_tr069_PORT || "3000";
+  const BaseUrlTr069 = "192.168.250.51" || "localhost";
+  // const BaseUrlTr069 = "localhost";
+  const PORTTr069 = "3000";
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -43,10 +45,10 @@ export default function LogIn() {
         const Data = {
           AuthToken: result.AuthToken
         }
-        const cookieString = `session=${JSON.stringify(Data)}`;
+        const cookieString = `${CookieName}=${JSON.stringify(Data)}`;
         document.cookie = cookieString;
         
-        navigate("/");
+        navigate("/home");
       } else {
         alert("Incorrect Email and password.");
       }

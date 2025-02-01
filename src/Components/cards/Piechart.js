@@ -28,7 +28,7 @@ const PieChartComponent = ({ memUsage, title, used,unused }) => {
   return (
     <div style={{ padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
       <h5>{title}</h5>
-      <PieChart width={276} height={320}>
+      <PieChart width={296} height={340}>
         <Pie
           data={pieData}
           cx="50%"
@@ -38,6 +38,8 @@ const PieChartComponent = ({ memUsage, title, used,unused }) => {
           outerRadius={70}
           fill="#8884d8"
           dataKey="value"
+          stroke={color}  
+          strokeWidth={0.2} 
         >
           {pieData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

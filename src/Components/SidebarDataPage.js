@@ -3,7 +3,7 @@ import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
 import { FaServer, FaAddressCard } from 'react-icons/fa6';
-import { MdWifi, MdNetworkCell, MdChecklist, MdFileUpload } from 'react-icons/md';
+import { MdNetworkCell, MdChecklist, MdFileUpload } from 'react-icons/md';
 import { RiCalendarScheduleFill } from 'react-icons/ri';
 import { CiTimer } from 'react-icons/ci';
 import { IoSettings, IoLogOutOutline } from 'react-icons/io5';
@@ -13,15 +13,16 @@ import { AiOutlineOrderedList } from 'react-icons/ai';
 import { SiServerfault } from "react-icons/si";
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+const CookieName = process.env.REACT_APP_COOKIENAME || "auto provision";
 
 const SidebarDataPage = () => {
  
   const navigate = useNavigate();
 
   const logOutCall = async () => {
-    await Cookies.remove("session");
+    Cookies.remove(CookieName); 
     await new Promise(resolve => setTimeout(resolve, 500));
-    navigate("/log-in");
+    navigate("/");
   };
 
   const iconColor = { color: '#9cf2ff' };
@@ -29,12 +30,12 @@ const SidebarDataPage = () => {
   const SidebarData = [
     {
       title: 'Dashboard',
-      path: '/',
+      path: '/home',
       onClick: '',
       icon: <AiIcons.AiFillHome style={iconColor} />
     },
     {
-      title: <span style={{ fontSize: '14px' }}>TR069 Device Detail</span>,
+      title: <span style={{ fontSize: '14px' }}>Device Detail</span>,
       icon: <BsTelephoneFill style={iconColor} />,
       iconClosed: <RiIcons.RiArrowDownSFill style={iconColor} />,
       iconOpened: <RiIcons.RiArrowUpSFill style={iconColor} />,
@@ -50,7 +51,7 @@ const SidebarDataPage = () => {
           icon: <AiOutlineOrderedList style={iconColor} />
         },
         {
-          title: 'File Upload',
+          title: 'Listing file',
           path: '/fileUploadList',
           icon: <MdFileUpload style={iconColor} />
         }
@@ -71,6 +72,11 @@ const SidebarDataPage = () => {
           icon: <IoIcons.IoIosPaper style={iconColor} />
         },
         {
+          title: 'Backup config',
+          path: '/Backup_config',
+          icon: <IoIcons.IoIosPaper style={iconColor} />
+        },
+        {
           title: 'Cisco CP-3905',
           path: '/cisco_CP-3905',
           icon: <IoIcons.IoIosPaper style={iconColor} />
@@ -87,12 +93,6 @@ const SidebarDataPage = () => {
           title: '5G core',
           path: '/linux-provisioning',
           icon: <MdNetworkCell style={iconColor} />,
-          cName: 'sub-nav'
-        },
-        {
-          title: 'Iot Gateway',
-          path: '/iot_gateway',
-          icon: <MdWifi style={iconColor} />,
           cName: 'sub-nav'
         },
         {

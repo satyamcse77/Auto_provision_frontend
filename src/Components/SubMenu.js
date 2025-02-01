@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { MdMenuBook } from "react-icons/md";
+import { Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SidebarLink = styled(Link)`
   display: flex;
@@ -49,13 +52,27 @@ const SectionTitle = styled.div`
 `;
 
 const SubMenu = ({ item }) => {
-  const [subnav, setSubnav] = useState(false);
 
+  const [subnav, setSubnav] = useState(false);
   const showSubnav = () => setSubnav(!subnav);
+  const [showMenu, setShowMenu] = useState(false);
+  const navigate = useNavigate();
 
   if (item.section) {
     return <SectionTitle>{item.section}</SectionTitle>;
   }
+
+  const handleMenuClick = () => {
+    setShowMenu(!showMenu);
+  }
+
+  const GoLink = () => {
+    window.open("http://170.187.248.8/ACS-tr-069-server/", "_blank");
+  }
+
+  const GoListDevice = () => {
+    navigate("/listing-devices");
+  } 
 
   return (
     <>
@@ -68,8 +85,8 @@ const SubMenu = ({ item }) => {
           {item.subNav && subnav
             ? item.iconOpened
             : item.subNav
-            ? item.iconClosed
-            : null}
+              ? item.iconClosed
+              : null}
         </div>
       </SidebarLink>
       {subnav &&
@@ -81,6 +98,21 @@ const SubMenu = ({ item }) => {
             </DropdownLink>
           );
         })}
+
+      <Outlet />
+      <div className="voice-button">
+        <MdMenuBook size={27} onClick={handleMenuClick} />
+      </div>
+
+      {showMenu && (
+        <div className="voice-popup">
+          <div className="voice-popup-content">
+            <button className="menu-item" onClick={GoLink}>App deb</button>
+            <button className="menu-item" onClick={GoListDevice}>List device</button>
+          </div>
+        </div>
+      )}
+
     </>
   );
 };

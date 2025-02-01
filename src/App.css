@@ -6,21 +6,155 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 2px; /* Width of the scrollbar */
+  width: 2px;
 }
 
+.selectAllButton {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  margin-left: 10px; 
+}
+
+.selectAllButton:hover {
+  background-color: #0056b3;
+}
+
+
+.backbutton {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    position: absolute;
+    top: 10px; 
+    left: 10px; 
+}
+
+
 ::-webkit-scrollbar-track {
-  background: #15171c; /* Background color of the scrollbar track */
+  background: #15171c; 
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #15171c; /* Color of the draggable part of the scrollbar */
-  border-radius: 6px; /* Roundness of the scrollbar */
+  background: #15171c; 
+  border-radius: 6px; 
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #15171c; /* Color when hovering over the draggable part */
+  background: #15171c; 
 }
+
+/* xml css */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.form-container {
+  background-color: black;
+  color: white;
+  padding: 20px;
+  width: 95%;
+  max-width: 900px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  text-align: center;
+  overflow: auto;
+  max-height: 95vh;
+  position: relative;
+}
+
+.textarea {
+  font-family: monospace;
+  font-size: 14px;
+  background-color: #0a0a0a;
+  color: white;
+  width: 100%;
+  height: 650px; 
+  border: 1px solid #444;
+  border-radius: 5px;
+  padding: 10px;
+  resize: vertical;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.button {
+  background-color: #5cb85c;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 0 10px;
+}
+
+.button:hover {
+  background-color: #4cae4c;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 50%;
+  z-index: 1100;
+}
+
+.error-text {
+  color: rgb(178, 91, 91);
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.textarea::-webkit-scrollbar {
+  width: 10px;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 5px;
+}
+
+.textarea::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}
+
+/* end */
+
 button {
   background-color: #4d8515;
   width: 100%;
@@ -60,6 +194,54 @@ button:hover {
   border-top: 2px solid #d0d0d0;
   margin: 20px 0;
 }
+
+.tabBarContainer {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #4a4a4a; /* Background color for the tab bar */
+  margin-left: 230px;
+  margin-top: 20px;
+}
+
+.tabItem {
+  height: 50px; /* Set a fixed height for dropdown */
+  min-width: 280px; /* Set a minimum width for consistency */
+  border-radius: 4px 0 0 4px; /* Rounded corners for the left side */
+}
+
+
+.tabItem.active {
+  background-color: #0a0a0ae8; /* Highlight for dropdown when active */
+  color: white;
+}
+
+.buttonGroup {
+  display: flex;
+}
+
+.provisionButton {
+  height: 50px; /* Same height as dropdown */
+  min-width: 280px; /* Set a minimum width for consistency */
+  border: 1px solid #198754; /* Button border color */
+  background-color: #198754; /* Button background color */
+  color: white; /* Button text color */
+  cursor: pointer;
+  border-radius: 0 4px 4px 0; /* Rounded corners for the right side */
+  transition: background-color 0.2s ease, color 0.2s ease; /* Transition effect */
+  margin: 0; /* Remove margin to eliminate gap */
+}
+
+.provisionButton:hover {
+  background-color: #198754; /* Background on hover */
+  color: #ffffff; /* Text color on hover */
+}
+
+.provisionButton.active {
+  background-color: #02010ede; /* Highlighted background color */
+  color: #fff; /* White text for contrast */
+}
+
 
 /* Sidebar */
 .sidebar {
@@ -195,20 +377,22 @@ button:hover {
 .system-settings-form{
   display: flex;
   flex-direction: column;
-  margin-left: 240px;
+  margin-left: 320px;
   margin-right: 40px;
   align-items: center;
   border-radius: 10px;
-  background-color: #fdfdfd;
+  background-color: #111111;
+  color: white;
   padding: 30px;
-  box-shadow: 10px 10px 5px 5px rgba(92, 92, 92, 0.3);
   width: auto;
   animation: slideIn 0.5s ease-out;
+  margin-bottom: 50px;
+  height: 50%;
+  width: 60%;
 }
 .system-settings-container {
   display: flex;
   width: 100%;
-
   background-color: #eee;
 }
 
@@ -240,6 +424,7 @@ button:hover {
   width: auto;
   animation: slideIn 0.5s ease-out;
   max-width: 800px;
+  position: relative;
 }
 .addMacForm{
   margin-top: 20px;
@@ -449,9 +634,79 @@ button:hover {
 }
 
 
+.unique-form-container {
+  display: flex;
+  justify-content: center;
+  color: white;
+  align-items: center;
+  padding: 20px;
+  background-color: #f5f5f5; /* Light background for contrast */
+  height: 100vh; /* Full viewport height */
+}
+
+.unique-black-box {
+  background-color: #131212; /* White background for the form box */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 400px; /* Fixed width for form */
+}
+
+.unique-form-group {
+  margin-bottom: 15px; /* Spacing between form groups */
+}
+
+.unique-form-group label {
+  display: block; /* Label takes full width */
+  margin-bottom: 5px; /* Space between label and input */
+  font-weight: bold; /* Bold labels */
+}
+
+.unique-form-group input {
+  width: 100%; /* Full width inputs */
+  padding: 10px; /* Padding for input */
+  border: 1px solid #ccc; /* Border color */
+  border-radius: 4px; /* Rounded corners */
+  box-sizing: border-box; /* Include padding and border in width */
+}
+
+.unique-button-group {
+  display: flex;
+  justify-content: space-between; /* Space between buttons */
+  margin-bottom: 15px; /* Space below buttons */
+}
+
+.unique-mac-address-group {
+  margin-top: 15px; /* Space above MAC address group */
+}
+
+.unique-mac-inputs {
+  display: flex;
+  align-items: center; /* Center inputs vertically */
+}
+
+.unique-mac-inputs input {
+  margin-right: 10px; /* Space between MAC and extension inputs */
+  flex: 1; /* Allow inputs to take available space */
+}
+
+.unique-button21 {
+  background-color: #007bff; /* Button color */
+  color: white; /* Text color */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 10px 15px; /* Padding for buttons */
+  cursor: pointer; /* Pointer cursor on hover */
+  height: 52px;
+}
+
+.unique-button21:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+
 /* Shell end css */
 
-/* Table Styles */
 .styled-table2232 {
   width: 100%;
   border-collapse: collapse;
@@ -460,25 +715,29 @@ button:hover {
   font-family: 'Arial', sans-serif;
   min-width: 400px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  background-color: rgb(44, 41, 41); /* Set overall table background to black */
+  color: white; /* Set default text color to white for readability */
 }
 
 .styled-table2232 th,
 .styled-table2232 td {
   padding: 12px 15px;
+  color: white; /* Ensure table data text color is white */
+  margin-left: 0px;
+  border: none; /* Remove borders if necessary */
 }
 
 .styled-table2232 thead tr {
-  background-color: #cccccc;
-  color: #666666;
-  text-align: left;
+  background-color: #4CAF50; /* Green background color for the header */
+  color: white; /* Set header text color to white */
 }
 
 .styled-table2232 tbody tr {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd; /* Adjust this if needed for visibility */
 }
 
 .styled-table2232 tbody tr:nth-of-type(even) {
-  background-color: rgb(179, 179, 179);
+  background-color: rgba(179, 179, 179, 0.2); /* Light gray with transparency for even rows */
 }
 
 .styled-table2232 tbody tr:last-of-type {
@@ -487,8 +746,9 @@ button:hover {
 
 .styled-table2232 tbody tr.active-row {
   font-weight: bold;
-  color: #585858;
+  color: white; /* Ensure active row text is white */
 }
+
 
 /* Text Styles */
 .Textlight {
@@ -718,6 +978,65 @@ input[type="file"] {
   color: #eee;
 }
 
+.black-boxinner{
+  background-color: #292929;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  color: #eee;
+  margin-top: 50px;
+}
+.black-boxinner21 {
+  background-color: #292929;
+  display: flex; /* Use flexbox for alignment */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  color: #eee;
+  margin-top: 50px;
+  height: 400px;
+  width: 700px;
+  margin-left: 350px;
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.back-icon {
+  position: absolute;
+  top: 10px; /* Distance from the top */
+  left: 10px; /* Distance from the left */
+  cursor: pointer; /* Pointer on hover */
+  color: #eee; /* Icon color */
+  font-size: 24px; /* Size of the icon */
+  transition: color 0.3s; /* Smooth color transition */
+}
+
+.back-icon:hover {
+  color: #80dfa0; /* Change color on hover */
+}
+
+.black-boxinner21 label {
+  margin-bottom: 5px; /* Space between label and input */
+}
+
+.black-boxinner21 input[type="text"] {
+  margin-bottom: 20px; /* Space between input fields */
+  width: 80%; /* Adjust width as needed */
+  padding: 8px; /* Add padding for better appearance */
+}
+
+.black-boxinner21 .buttonSmall {
+  position: absolute;
+  height: 50px;
+  width: 130px;
+  bottom: 10px; /* Set distance from the bottom */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .progress-bar {
   width: 100%;
   background-color: #f3f3f3;
@@ -743,7 +1062,8 @@ input[type="file"] {
   border-radius: 5px;
 
 }
-.form-accounts-container {
+
+.form-accounts-container{
   display: flex;
   justify-content: space-between;
   gap: 2rem;
@@ -762,6 +1082,74 @@ input[type="file"] {
   width: auto;
   justify-content: center;
   
+}
+
+.form334 {
+  background-color: #292929; /* Black background */
+  height: 100px;
+  width: 700px;
+  margin-top: 30px;
+  margin-left: 240px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.form33 {
+  background-color: #292929; /* Black background */
+  height: 100px;
+  width: 700px;
+  margin-left: 240px;
+  display: flex;
+  
+  justify-content: space-around;
+  align-items: center;
+}
+
+.button211 {
+  background-color: #4CAF50; /* Green background */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  height: 40px;
+  width: 120px;
+  transition: background-color 0.3s ease;
+}
+
+.button211:hover {
+  background-color: #45a049; 
+  height: 40px;
+  width: 120px;
+}
+
+.button213 {
+  background-color: #4CAF50; /* Green background */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  height: 50px;
+  width: 180px;
+  transition: background-color 0.3s ease;
+}
+
+.button213:hover {
+  background-color: #45a049; 
+  height: 50px;
+  width: 180px;
 }
 
 
@@ -912,44 +1300,6 @@ input[type="file"] {
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
-/* Table Styles */
-.styled-table2232 {
-  width: 100%; /* Full width within the container */
-  border-collapse: collapse;
-  margin: 0; /* Remove default margins */
-  font-size: 0.9em;
-  font-family: 'Arial', sans-serif;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-
-.styled-table2232 th,
-.styled-table2232 td {
-  padding: 12px 15px;
-  text-align: left; /* Align text to the left */
-}
-
-.styled-table2232 thead tr {
-  background-color: #cccccc;
-  color: #666666;
-}
-
-.styled-table2232 tbody tr {
-  border-bottom: 1px solid #dddddd;
-}
-
-.styled-table2232 tbody tr:nth-of-type(even) {
-  background-color: rgb(179, 179, 179);
-}
-
-.styled-table2232 tbody tr:last-of-type {
-  border-bottom: 2px solid #a5a5a5;
-}
-
-.styled-table2232 tbody tr.active-row {
-  font-weight: bold;
-  color: #585858;
-}
-
 /* Text Styles */
 .Textlight {
   color: white;
@@ -977,21 +1327,42 @@ h3 {
 .history-list{
   margin-top: 20px;
 }
-
-/* PieChart.css */
 .pie-chart-container {
-  display: flex;
-  flex-direction: column;
-  margin-left: 450px;
-  padding: 20px;
-  height: calc(100vh - 100px); 
-  box-sizing: border-box;
+  display: flex; /* Enable flexbox */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  margin-left: 250px; /* Maintain your existing margin */
+  padding: 20px; /* Add padding */
+  height: calc(100vh - 100px); /* Full height minus 100px */
+  box-sizing: border-box; /* Include padding in height calculations */
 }
 
 .pie-chart {
-  width: 50%;
-  max-width: 600px; /* Adjust the max width as needed */
-  height: auto;
+  margin: 20px 0; /* Add spacing around the pie chart */
+  width: 400px; /* Set the width of the pie chart */
+  height: 400px;
+}
+
+h2 {
+  font-size: 24px; /* Adjust the font size for headings */
+  font-weight: bold; /* Make headings bold */
+  color: #333; /* Set text color */
+  margin: 10px 0; /* Add vertical margin for spacing */
+}
+
+/* Specific styles for online and offline device counts */
+.online-count {
+  font-size: 20px; /* Slightly smaller font size */
+  font-weight: normal; /* Normal font weight */
+  color: #4cc24c; /* Color for online devices */
+  margin: 5px 0; /* Add vertical margin */
+}
+
+.offline-count {
+  font-size: 20px; /* Slightly smaller font size */
+  font-weight: normal; /* Normal font weight */
+  color: #dc3545; /* Color for offline devices */
+  margin: 5px 0; /* Add vertical margin */
 }
 
 /* Right hand side bar */
@@ -1493,4 +1864,306 @@ h3 {
 
 .step:nth-child(4) {
   animation-delay: 15s;
+}
+
+
+/* fireware bulk  */
+
+.popup-container {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) translateY(-40px);
+  text-align: center;
+  padding-right: 20px; /* Adds some spacing from the right edge */
+}
+
+.open-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.popup {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  width: 220px;
+  background-color: #0f0e0e;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 5px;
+  text-align: left; /* Align content to the left inside the popup */
+}
+
+.popup-btn {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.popup-btn:hover {
+  background-color: #218838;
+}
+
+/* end */
+
+/* all button show  */
+.voice-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999; /* Ensure it stays on top of all elements */
+  background-color: black; /* Stylish blue */
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  cursor: pointer;
+  pointer-events: all; /* Prevent interference from other elements */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.voice-button:hover {
+  background-color: black !important; /* Darker blue on hover */
+  transform: scale(1.1) !important;
+}
+
+.voice-button:active {
+  transform: scale(0.95);
+}
+
+/* Popup container */
+.voice-popup {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 9998;
+  width: 170px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Popup content with buttons */
+.voice-popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+/* Individual menu buttons */
+.menu-item {
+  background-color: black;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.menu-item:hover {
+  background-color: black;
+}
+
+.menu-item:active {
+  transform: scale(0.95);
+}
+
+.history-list-box {
+  margin-left: 240px;
+  margin-right: 40px;
+  margin-top: 100px;
+}
+
+.form-group {
+  width: 100%;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.history-list {
+  margin-left: 240px;
+  margin-right: 40px;
+  margin-top: 40px;
+}
+
+.form-group {
+  width: 100%;
+  padding: 20px;
+  background-color: #e3dede;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table2233 {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: 'Arial', sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  background-color: rgb(44, 41, 41); /* Dark background */
+  color: white; /* Set default text color to white for readability */
+}
+
+.styled-table2233 th,
+.styled-table2233 td {
+  padding: 12px 15px;
+  color: white; /* Ensure table data text color is white */
+  margin-left: 0px;
+  border: none; /* Remove borders if necessary */
+}
+
+.styled-table2233 thead tr {
+  background-color: #4CAF50; /* Green background for header */
+  color: white; /* Set header text color to white */
+  position: sticky;
+  top: 0;
+  z-index: 1; /* Ensure header stays on top while scrolling */
+}
+
+.styled-table2233 tbody tr {
+  border-bottom: 1px solid #dddddd; /* Light bottom border for rows */
+}
+
+.styled-table2233 tbody tr:nth-of-type(even) {
+  background-color: rgba(179, 179, 179, 0.2); /* Light gray with transparency for even rows */
+}
+
+.styled-table2233 tbody tr:last-of-type {
+  border-bottom: 2px solid #a5a5a5;
+}
+
+.styled-table2233 tbody tr.active-row {
+  font-weight: bold;
+  color: white; /* Ensure active row text is white */
+}
+
+.table-container {
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  position: relative;
+}
+
+.phoneDropdown {
+  width: 60px;
+  height: 30px;
+}
+
+.phoneDropdownFile {
+  width: 60px;
+  height: 30px;
+}
+
+/* end */
+
+/* fix css of ip phone 3 button */
+
+.tabBarContainer2 {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #4a4a4a; /* Background color for the tab bar */
+  margin-left: 230px;
+  margin-top: 20px;
+  width: calc(100% - 230px); /* Ensuring it stretches to full available width */
+}
+
+.tabItem2 {
+  height: 50px; /* Fixed height for dropdown */
+  min-width: 280px; /* Minimum width for consistency */
+  border-radius: 4px 0 0 4px; /* Rounded corners for the left side */
+  border: 1px solid #198754; /* Border to match the button */
+  background-color: #fff; /* Background color */
+  color: #000; /* Text color */
+  padding: 0 15px; /* Inner padding */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.tabItem2.active {
+  background-color: #0a0a0ae8; /* Highlight for dropdown when active */
+  color: white;
+}
+
+.provisionButton2 {
+  height: 50px; /* Same height as dropdown */
+  min-width: 280px; /* Minimum width for consistency */
+  border: 1px solid #198754; /* Button border color */
+  background-color: #198754; /* Button background color */
+  color: white; /* Button text color */
+  cursor: pointer;
+   /* Rounded corners for the right side */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition effect */
+  font-size: 16px;
+  text-align: center;
+}
+
+.provisionButton2:hover {
+  background-color: #157347; /* Darker shade on hover */
+  color: #ffffff; /* White text on hover */
+}
+
+.provisionButton2.active {
+  background-color: #02010ede; /* Highlighted background color */
+  color: #fff; /* White text for contrast */
+}
+
+.buttonGroup2 {
+  display: flex;
+  flex-grow: 1; /* Allow buttons to expand within container */
+  justify-content: flex-start; /* Align buttons to the start */
+}
+
+
+/* end */
+
+.form-group22 {
+  width: 80%;
+  padding: 20px;
+  background-color: #e3dede;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-left: 240px;
+  margin-top: 30px;
 }

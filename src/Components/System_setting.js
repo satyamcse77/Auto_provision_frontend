@@ -5,8 +5,10 @@ import { useNavigate } from "react-router-dom";
 import Tabs from "./cards/Tabs";
 import Header from "./cards/header";
 import Switch from "@mui/material/Switch";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function SystemSetting() {
+
   const [subnet, setSubnet] = useState("");
   const [netmask, setNetmask] = useState("");
   const [rangeStart, setRangeStart] = useState("");
@@ -17,75 +19,80 @@ export default function SystemSetting() {
   const [DhcpOn, setDhcpOn] = useState(false);
   const [TftpOn, setTftpOn] = useState(false);
   const navigate = useNavigate();
-  const Token = Cookies.get(process.env.REACT_APP_COOKIENAME || "session");
-  const BaseUrlTr069 = process.env.REACT_APP_API_tr069_URL || "localhost";
-  const PORTTr069 = process.env.REACT_APP_API_tr069_PORT || "3000";
-  const BaseUrlNode = process.env.REACT_APP_API_NODE_URL || "localhost";
-  const PORTNode = process.env.REACT_APP_API_NODE_PORT || "3000";
+  const Token = Cookies.get(process.env.REACT_APP_COOKIENAME || "auto provision");
+  const BaseUrlTr069 = "192.168.250.51" || "localhost";
+  const PORTTr069 = "3000";
+  const BaseUrlNode = "192.168.250.51" || "localhost";
+  const PORTNode = process.env.REACT_APP_API_NODE_PORT || "4058";
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (!Token) navigate("/log-in");
-    const fetchData = async () => {
-      try {
-        const TokenData = JSON.parse(Token);
-        const response = await fetch(
-          `http://${BaseUrlTr069}:${PORTTr069}/checkAuth`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: "Bearer " + TokenData.AuthToken,
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        if (data.status !== 1) {
-          navigate("/log-in");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        navigate("/log-in");
-      }
-    };
-
-    const fetchData2 = async () => {
-      try {
-        const TokenData = JSON.parse(Token);
-        const DhcpStart = "2";
-        const TftpStart = "2";
-        const url = `http://${BaseUrlNode}:${PORTNode}/checkStatus`;
-        const response = await fetch(url, {
+  const fetchData = async () => {
+    try {
+      if (!Token) navigate("/");
+      const TokenData = JSON.parse(Token);
+      const response = await fetch(
+        `http://${BaseUrlTr069}:${PORTTr069}/checkAuth`,
+        {
           method: "POST",
           headers: {
             Authorization: "Bearer " + TokenData.AuthToken,
-            "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            DhcpStart: DhcpStart,
-            TftpStart: TftpStart,
-          }),
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        const data = await response.json();
-        if (data.status === 0) {
-          setDhcpOn(data.data.Dhcp === 1);
-          setTftpOn(data.data.Tfcp === 1);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    };
+      const data = await response.json();
+      if (data.status !== 1) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      navigate("/");
+    }
+  };
 
+  const fetchData2 = async () => {
+    try {
+
+      const TokenData = JSON.parse(Token);
+      const DhcpStart = "2";
+      const TftpStart = "2";
+      const url = `http://${BaseUrlNode}:${PORTNode}/checkStatus`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + TokenData.AuthToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          DhcpStart: DhcpStart,
+          TftpStart: TftpStart,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data.status === 0) {
+        setDhcpOn(data.data.Dhcp === 1);
+        setTftpOn(data.data.Tfcp === 1);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchData2();
     fetchData();
-  }, [navigate, BaseUrlTr069, PORTTr069, Token, BaseUrlNode, PORTNode]);
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const dhcpConfig = {
       subnet: subnet,
       netmask: netmask,
@@ -119,11 +126,14 @@ export default function SystemSetting() {
       }
     } catch (error) {
       console.error("Error submitting DHCP configuration:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSwitchChange = async (event) => {
     try {
+      setIsLoading(true);
       const TokenData = JSON.parse(Token);
       const DhcpStart = DhcpOn ? "0" : "1";
       const TftpStart = "2";
@@ -147,14 +157,18 @@ export default function SystemSetting() {
       const data = await response.json();
       if (data.status === 0) {
         (await data.data.Dhcp) === 1 ? setDhcpOn(true) : setDhcpOn(false);
+        fetchData2();
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSwitchChange2 = async (event) => {
     try {
+      setIsLoading(true);
       const TokenData = JSON.parse(Token);
       const TftpStart = TftpOn ? "0" : "1";
       console.log(TftpStart);
@@ -177,9 +191,12 @@ export default function SystemSetting() {
       const data = await response.json();
       if (data.status === 0) {
         (await data.data.Tfcp) === 1 ? setTftpOn(true) : setTftpOn(false);
+        fetchData2();
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -278,7 +295,7 @@ export default function SystemSetting() {
                 </div>
                 <div className="form-group90">
                   <label htmlFor="Tftp">
-                  Tftp server name:
+                    Tftp server name:
                   </label>
                   <input
                     type="text"
@@ -305,24 +322,25 @@ export default function SystemSetting() {
       case "Status":
         return (
           <>
-          <div className="system-setting-status">
-            <div className="setting-item">
-              <h3>DHCP</h3>
-              <StatusSwitch
-                DhcpOn={DhcpOn}
-                onSwitchChange={handleSwitchChange}
-              />
+            {(!DhcpOn && !TftpOn) && (<span style={{ color: "red" }}>Ensure that DHCP and TFTP services are installed only then its work.</span>)}
+            <div className="system-setting-status" style={{ marginTop: "20px" }}>
+              <div className="setting-item">
+                <h3>DHCP</h3>
+                <StatusSwitch
+                  DhcpOn={DhcpOn}
+                  onSwitchChange={handleSwitchChange}
+                />
+              </div>
             </div>
-          </div>
-          <div className="system-setting-status" style={{marginTop: "20px"}}>
-          <div className="setting-item">
-            <h3>TFTP</h3>
-            <StatusSwitch
-              DhcpOn={TftpOn}
-              onSwitchChange={handleSwitchChange2}
-            />
-          </div>
-        </div>
+            <div className="system-setting-status" style={{ marginTop: "20px" }}>
+              <div className="setting-item">
+                <h3>TFTP</h3>
+                <StatusSwitch
+                  DhcpOn={TftpOn}
+                  onSwitchChange={handleSwitchChange2}
+                />
+              </div>
+            </div>
           </>
         );
       default:
@@ -342,6 +360,33 @@ export default function SystemSetting() {
         />
       </div>
       {renderTabContent()}
+
+      {isLoading && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div style={{ color: "white", fontSize: "30px", display: "flex", alignItems: "center" }}>
+            <AiOutlineLoading3Quarters
+              style={{
+                animation: "spin 2s linear infinite",
+                marginRight: "10px",
+              }}
+            />
+            Please wait... while we are saveing the data.
+          </div>
+        </div>
+      )}
     </>
   );
 }

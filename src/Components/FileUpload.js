@@ -5,21 +5,24 @@ import { useNavigate } from "react-router-dom";
 import Header from "./cards/header";
 import { faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function Fault() {
   const [apiData, setApiData] = useState([]);
-  const BaseUrlSpring = process.env.REACT_APP_API_SPRING_URL || "localhost";
-  const PORTSpring = process.env.REACT_APP_API_SPRING_PORT || "9090";
-  const BaseUrlTr069 = process.env.REACT_APP_API_tr069_URL || "localhost";
-  const PORTTr069 = process.env.REACT_APP_API_tr069_PORT || "3000";
-  const CookieName = process.env.REACT_APP_COOKIENAME || "session";
+  const BaseUrlSpring = "192.168.250.51" || "localhost";
+  const PORTSpring = process.env.REACT_APP_API_SPRING_PORT || "9093";
+  const BaseUrlTr069 = "192.168.250.51" || "localhost";
+  const PORTTr069 = "3000";
+  const CookieName = process.env.REACT_APP_COOKIENAME || "auto provision";
   const Token = Cookies.get(CookieName);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!Token) navigate("/log-in");
+
     const fetchData = async () => {
       try {
+        if (!Token) navigate("/");
         const TokenData = JSON.parse(Token);
         const response = await fetch(
           `http://${BaseUrlTr069}:${PORTTr069}/checkAuth`,
@@ -32,7 +35,7 @@ export default function Fault() {
         );
         const data = await response.json();
         if (data.status !== 1) {
-          navigate("/log-in");
+          navigate("/");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -70,18 +73,9 @@ export default function Fault() {
         console.error("Error fetching data:", error);
       }
     };
-    const intervalId = setInterval(fetchData2, 2000);
-    return () => clearInterval(intervalId);
-  }, [
-    navigate,
-    setApiData,
-    apiData,
-    BaseUrlSpring,
-    PORTSpring,
-    BaseUrlTr069,
-    PORTTr069,
-    Token,
-  ]);
+    
+    fetchData2();
+  }, []);
 
   const handleDownload = async (FileName) => {
     const TokenData = JSON.parse(Token);
@@ -127,6 +121,7 @@ export default function Fault() {
 
   const handleDelete = async (FileName) => {
     const TokenData = JSON.parse(Token);
+    setIsLoading(true);
     try {
       const response = await fetch(
         `http://${BaseUrlSpring}:${PORTSpring}/api/deviceManager/delete_file`,
@@ -145,17 +140,19 @@ export default function Fault() {
       }
     } catch (error) {
       console.error("Error delete data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <>
       <Navbar />
-      <Header Title="File_upload" breadcrumb="/File-upload" />
+      <Header Title="Listing_file" breadcrumb="/Listing-file" />
       <form
         className="history-list"
         style={{ marginLeft: "240px", marginRight: "40px" }}
-        >
+      >
         <div className="form-group902232">
           <table className="styled-table2232">
             <thead>
@@ -175,7 +172,7 @@ export default function Fault() {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{item._id || "N/A"}</td>
-                    <td>{item.metadata?item.metadata.fileType:"N/A"}</td>
+                    <td>{item.metadata ? item.metadata.fileType : "N/A"}</td>
                     <td>{item.metadata.oui || "N/A"}</td>
                     <td>{item.metadata.productClass || "N/A"}</td>
                     <td>{item.metadata.version || "N/A"}</td>
@@ -200,8 +197,42 @@ export default function Fault() {
               })}
             </tbody>
           </table>
+          <div style={{ marginBottom: "50px" }}>
+            {apiData.length === 0 && (
+              <span style={{ color: "red" }}>
+                No data present, the table will be empty.
+              </span>
+            )}
+          </div>
         </div>
       </form>
+
+      {isLoading && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div style={{ color: "white", fontSize: "30px", display: "flex", alignItems: "center" }}>
+            <AiOutlineLoading3Quarters
+              style={{
+                animation: "spin 2s linear infinite",
+                marginRight: "10px",
+              }}
+            />
+            Please wait... while we are saving the data.
+          </div>
+        </div>
+      )}
     </>
   );
 }

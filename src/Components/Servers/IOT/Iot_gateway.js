@@ -7,13 +7,13 @@ import Header from '../../cards/header';
 export default function Iot_gateway() {
 
   const navigate = useNavigate();
-  const BaseUrlTr069 = process.env.REACT_APP_API_tr069_URL || "localhost";
-  const PORTTr069 = process.env.REACT_APP_API_tr069_PORT || "3000";
-  const CookieName = process.env.REACT_APP_COOKIENAME || "session";
+  const BaseUrlTr069 = "192.168.250.51" || "localhost";
+  const PORTTr069 = "3000";
+  const CookieName = process.env.REACT_APP_COOKIENAME || "auto provision";
   const Token = Cookies.get(CookieName);
 
   useEffect(() => {
-    if (!Token) navigate("/log-in");
+    if (!Token) navigate("/");
     const fetchData = async () => {
       try {
         const TokenData = JSON.parse(Token);
@@ -28,14 +28,14 @@ export default function Iot_gateway() {
         );
         const data = await response.json();
         if (data.status !== 1) {
-          navigate("/log-in");
+          navigate("/");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [navigate, BaseUrlTr069, PORTTr069, Token]);
+  }, []);
 
   return (
     <>

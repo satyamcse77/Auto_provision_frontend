@@ -11,16 +11,16 @@ const LinuxProvisioning = () => {
   const [shellData, setShellData] = useState(
     "Welcome to linux Shell! This is a read-only shell."
   );
-  const BaseUrlTr069 = process.env.REACT_APP_API_tr069_URL || "localhost";
-  const PORTTr069 = process.env.REACT_APP_API_tr069_PORT || "3000";
-  const BaseUrlNode = process.env.REACT_APP_API_NODE_URL || "localhost";
-  const PORTNode = process.env.REACT_APP_API_NODE_PORT || "3000";
-  const CookieName = process.env.REACT_APP_COOKIENAME || "session";
+  const BaseUrlTr069 = "192.168.250.51" || "localhost";
+  const PORTTr069 = "3000";
+  const BaseUrlNode = "192.168.250.51" || "localhost";
+  const PORTNode = process.env.REACT_APP_API_NODE_PORT || "4058";
+  const CookieName = process.env.REACT_APP_COOKIENAME || "auto provision";
   const Token = Cookies.get(CookieName);
   const [ipAddresses, setIpAddresses] = useState([""]);
 
   useEffect(() => {
-    if (!Token) navigate("/log-in");
+    if (!Token) navigate("/");
     const fetchData = async () => {
       try {
         const TokenData = JSON.parse(Token);
@@ -35,82 +35,133 @@ const LinuxProvisioning = () => {
         );
         const data = await response.json();
         if (data.status !== 1) {
-          navigate("/log-in");
+          navigate("/");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, [navigate, BaseUrlTr069, PORTTr069, Token]);
+  }, []);
 
-  const handleInputChange = (index, value) => {
+  const handleInputChange = async (index, value) => {
     const updatedIpAddresses = [...ipAddresses];
     updatedIpAddresses[index] = value;
-    setIpAddresses(updatedIpAddresses);
+    await setIpAddresses(updatedIpAddresses);
   };
 
-  const addIpAddress = () => {
-    setIpAddresses([...ipAddresses, ""]);
+  const addIpAddress = async () => {
+    await setIpAddresses([...ipAddresses, ""]);
   };
 
-  const removeIpAddress = (index) => {
+  const removeIpAddress = async (index) => {
     const updatedIpAddresses = [...ipAddresses];
     updatedIpAddresses.splice(index, 1);
-    setIpAddresses(updatedIpAddresses);
+    await setIpAddresses(updatedIpAddresses);
   };
 
   const RebootCall = async () => {
     try {
       const TokenData = JSON.parse(Token);
-      let result = await fetch(
-        `http://${BaseUrlNode}:${PORTNode}/linuxReboot`,
-        {
-          method: "post",
-          headers: {
-            Authorization: "Bearer " + TokenData.AuthToken,
-          },
-          body: JSON.stringify({ devices: ipAddresses }),
+      const maxRetries = 3; // Maximum retry attempts
+      let retryCount = 0;
+      let devices = [];
+  
+      // Retry mechanism for fetching devices
+      while (devices.length === 0 && retryCount < maxRetries) {
+        devices = await ipAddresses; // Fetch devices
+        if (devices.length === 0) {
+          await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds
+          retryCount++;
         }
-      );
-      result = await result.json();
-      if (result.status === 0) {
-        setShellData(result.responce);
-        alert(`Success: ${result.message}`);
+      }
+  
+      // If devices are still empty after retries
+      if (devices.length === 0) {
+        alert("No devices found after multiple attempts.");
+        return;
+      }
+  
+      console.log("Devices:", devices);
+  
+      // Perform the POST request
+      let response = await fetch(`http://${BaseUrlNode}:${PORTNode}/linuxReboot`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${TokenData.AuthToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ devices }),
+      });
+  
+      response = await response.json();
+  
+      // Handle the response
+      if (response.status === 0) {
+        setShellData(response.responce);
+        alert(`Success: ${response.message}`);
       } else {
-        setShellData(result.responce);
-        alert(`Error: ${result.message}`);
+        setShellData(response.responce);
+        alert(`Error: ${response.message}`);
       }
     } catch (error) {
-      console.error("Server Error.");
+      console.error("Error during RebootCall:", error);
+      alert("Server Error. Please try again later.");
     }
   };
+  
 
   const LinuxConfig = async () => {
     try {
       const TokenData = JSON.parse(Token);
-      let result = await fetch(
-        `http://${BaseUrlNode}:${PORTNode}/linuxConfig`,
-        {
-          method: "post",
-          headers: {
-            Authorization: "Bearer " + TokenData.AuthToken,
-          },
-          body: JSON.stringify({ devices: ipAddresses }),
+      const maxRetries = 3; // Maximum retry attempts
+      let retryCount = 0;
+      let devices = [];
+  
+      // Retry mechanism for fetching devices
+      while (devices.length === 0 && retryCount < maxRetries) {
+        devices = await ipAddresses; // Fetch devices
+        if (devices.length === 0) {
+          console.log("Devices list is empty. Retrying in 5 seconds...");
+          await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for 5 seconds
+          retryCount++;
         }
-      );
-      result = await result.json();
-      if (result.status === 0) {
-        setShellData(result.responce);
-        alert(`Success: ${result.message}`);
+      }
+  
+      // If devices are still empty after retries
+      if (devices.length === 0) {
+        alert("No devices found after multiple attempts.");
+        return;
+      }
+  
+      console.log("Devices:", devices);
+  
+      // Perform the POST request
+      let response = await fetch(`http://${BaseUrlNode}:${PORTNode}/linuxConfig`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${TokenData.AuthToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ devices }),
+      });
+  
+      response = await response.json();
+  
+      // Handle the response
+      if (response.status === 0) {
+        setShellData(response.responce);
+        alert(`Success: ${response.message}`);
       } else {
-        setShellData(result.responce);
-        alert(`Error: ${result.message}`);
+        setShellData(response.responce);
+        alert(`Error: ${response.message}`);
       }
     } catch (error) {
-      console.error("Server Error.");
+      console.error("Error during LinuxConfig:", error);
+      alert("Server Error. Please try again later.");
     }
   };
+  
 
   return (
     <>
